@@ -13,14 +13,21 @@ import xgcm
 import gsw, xwmt
 import zarr
 
-chunks = {'time':1, 'xh':360, 'yh':360, 'zl':-1}
+import sys
+model = sys.argv[1]
+
+print(f"Subsample {model} transient tracer output.")
+dim_coarsen_dict = {"CM4Xp25": {"xh":2, "yh":2}, "CM4Xp125": {"xh":4, "yh":4}}
+dim_coarsen = dim_coarsen_dict[model]
+odivs = CM4Xutils.exp_dict[model]
+
 def load_tracer(exp, tracer):
     meta = doralite.dora_metadata(exp)
     pp = meta['pathPP']
     ppname = "ocean_inert_month"
     out = "ts"
     local = gu.get_local(pp, ppname, out)
-    ds = gu.open_frompp(pp, ppname, "ts", local, "*", tracer, dmget=True, chunks=chunks)
+    ds = gu.open_frompp(pp, ppname, "ts", local, "*", tracer, dmget=True)
     return ds
 
 def load_state(exp):
@@ -30,7 +37,7 @@ def load_state(exp):
     ppname = "ocean_annual"
     out = "ts"
     local = gu.get_local(pp, ppname, out)
-    ds = gu.open_frompp(pp, ppname, "ts", local, "*", state_vars, dmget=True, chunks=chunks)
+    ds = gu.open_frompp(pp, ppname, "ts", local, "*", state_vars, dmget=True)
 
     og = gu.open_static(pp, ppname)
     model = [e for e,d in CM4Xutils.exp_dict.items() for k,v in d.items() if exp==v][0]
@@ -56,26 +63,37 @@ def load(exp, tracers):
     ds = xr.merge([ds_tracer, ds_thickness], compat="override")
     
     grid = CM4Xutils.ds_to_grid(ds)
+    
+    return grid
 
-    wm = xwmt.WaterMass(grid)
-
-    return wm.grid
-
+def area_weighted_coarsen(ds, dim):
+    dA = ds.areacello
+    ds_center = ds[["thkcello"]]
+    ds_coarse = (ds_center*dA).coarsen(dim=dim).sum() / dA.coarsen(dim=dim).sum()
+    dA_coarse = dA.coarsen(dim=dim).sum()
+    ds_coarse = ds_coarse.assign_coords({"areacello": dA_coarse})
+    return ds_coarse
+    
 def volume_weighted_coarsen(ds, dim):
     dV = ds.thkcello*ds.areacello
-    ds_new = ds[[v for v in ds.data_vars if "zl" in ds[v].dims]]
+    ds_new = ds[[v for v in ["cfc11", "cfc12", "sf6", "thetao", "so"] if v in ds.data_vars]]
     return (ds_new*dV).coarsen(dim=dim).sum() / dV.coarsen(dim=dim).sum()
 
-dim_coarsen_dict = {"CM4Xp25": {"xh":2, "yh":2}, "CM4Xp125": {"xh":4, "yh":4}}
-for model, dim_coarsen in dim_coarsen_dict.items():
-    odivs = CM4Xutils.exp_dict[model]
-    exps = {"historical": None, "ssp585": None, "piControl": None, }
-    with warnings.catch_warnings(action='ignore', category=UserWarning):
-        for exp in exps.keys():
-            grid = load(odivs[exp], ["cfc11", "cfc12", "sf6"])
-            exps[exp] = volume_weighted_coarsen(grid._ds, dim=dim_coarsen)
-            if exp=="piControl":
-                exps[exp] = exps[exp].assign_coords(
-                    {"time": exps[exp].year+(exps["historical"].year[0] - exps[exp].year[0])}
-                )
-            exps[exp].to_zarr(f"/work/hfd/ftp/{model}_{exp}_transient_tracers.zarr", mode="w")
+def weighted_coarsen(ds, dim):
+    ds_area = area_weighted_coarsen(ds, dim)
+    ds_volume = volume_weighted_coarsen(ds, dim)
+    ds = xr.merge([ds_area, ds_volume], compat="override")
+    return ds
+
+exps = {"historical": None, "ssp585": None, "piControl": None, }
+with warnings.catch_warnings(action='ignore', category=UserWarning):
+    for exp in exps.keys():
+        grid = load(odivs[exp], ["cfc11", "cfc12", "sf6"])
+        exps[exp] = weighted_coarsen(grid._ds, dim=dim_coarsen)
+        if exp=="piControl":
+            exps[exp] = exps[exp].assign_coords(
+                {"time": exps[exp].year+(exps["historical"].year[0] - exps[exp].year[0])}
+            )
+        exps[exp].chunk({"year":1, "xh":-1, "yh":-1, "zl":-1}).to_zarr(
+            f"/work/hfd/ftp/{model}_{exp}_transient_tracers.zarr", mode="w"
+        )
