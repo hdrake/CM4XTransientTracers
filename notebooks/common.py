@@ -7,6 +7,13 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
 sigma2_i = np.array([0, 36.7, 36.96, 60])
+sigma2_upperdeep = sigma2_i[1]
+sigma2_deepbottom = sigma2_i[2]
+sigma2_range = [
+    rf"$\sigma_{{2}} \leq {sigma2_upperdeep}$ kg/m$^{{3}}$",
+    rf"${sigma2_upperdeep}$ kg/m$^{{3}}$ $< \sigma_{{2}} \leq {sigma2_deepbottom}$ kg/m$^{{3}}$",
+    rf"${sigma2_deepbottom}$ kg/m$^{{3}}$ $< \sigma_{{2}}$"
+]
 layer_labels = ["Upper layer", "Deep layer", "Bottom layer"]
 layer_labels_short = ["Upper", "Deep", "Bottom"]
 layer_colors = ["darkgoldenrod", "seagreen", "darkslateblue"]
