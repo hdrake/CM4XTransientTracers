@@ -1,0 +1,22 @@
+2024-03-27 16:40:47,922 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.121:43615'
+2024-03-27 16:41:02,739 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.121:37801
+2024-03-27 16:41:02,740 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.121:37801
+2024-03-27 16:41:02,740 - distributed.worker - INFO -           Worker name:            SLURMCluster-10
+2024-03-27 16:41:02,740 - distributed.worker - INFO -          dashboard at:         172.16.3.121:45538
+2024-03-27 16:41:02,740 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.54:32812
+2024-03-27 16:41:02,740 - distributed.worker - INFO - -------------------------------------------------
+2024-03-27 16:41:02,740 - distributed.worker - INFO -               Threads:                         36
+2024-03-27 16:41:02,740 - distributed.worker - INFO -                Memory:                  37.25 GiB
+2024-03-27 16:41:02,740 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-9x9ys9rj
+2024-03-27 16:41:02,740 - distributed.worker - INFO - -------------------------------------------------
+2024-03-27 16:41:02,767 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.54:32812
+2024-03-27 16:41:02,767 - distributed.worker - INFO - -------------------------------------------------
+2024-03-27 16:41:02,767 - distributed.core - INFO - Starting established connection to tcp://172.16.3.54:32812
+2024-03-27 16:41:37,312 - distributed.utils_perf - INFO - full garbage collection released 34.96 MiB from 1135 reference cycles (threshold: 9.54 MiB)
+2024-03-27 18:25:52,713 - distributed.core - INFO - Connection to tcp://172.16.3.54:32812 has been closed.
+2024-03-27 18:25:52,714 - distributed.worker - INFO - Stopping worker at tcp://172.16.3.121:37801. Reason: worker-handle-scheduler-connection-broken
+2024-03-27 18:25:52,717 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://172.16.3.121:43615'. Reason: worker-handle-scheduler-connection-broken
+2024-03-27 18:25:52,725 - distributed.nanny - INFO - Worker closed
+2024-03-27 18:25:54,731 - distributed.nanny - ERROR - Worker process died unexpectedly
+2024-03-27 18:25:55,134 - distributed.nanny - INFO - Closing Nanny at 'tcp://172.16.3.121:43615'. Reason: nanny-close-gracefully
+2024-03-27 18:25:55,135 - distributed.dask_worker - INFO - End worker

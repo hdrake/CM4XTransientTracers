@@ -1,0 +1,15 @@
+2024-04-02 15:57:09,134 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.171:42508'
+2024-04-02 15:57:12,666 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.171:36254
+2024-04-02 15:57:12,667 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.171:36254
+2024-04-02 15:57:12,667 - distributed.worker - INFO -           Worker name:            SLURMCluster-10
+2024-04-02 15:57:12,667 - distributed.worker - INFO -          dashboard at:         172.16.3.171:40845
+2024-04-02 15:57:12,667 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.62:34197
+2024-04-02 15:57:12,667 - distributed.worker - INFO - -------------------------------------------------
+2024-04-02 15:57:12,667 - distributed.worker - INFO -               Threads:                         36
+2024-04-02 15:57:12,667 - distributed.worker - INFO -                Memory:                 178.81 GiB
+2024-04-02 15:57:12,667 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-ycebx_5e
+2024-04-02 15:57:12,667 - distributed.worker - INFO - -------------------------------------------------
+2024-04-02 15:57:12,680 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.62:34197
+2024-04-02 15:57:12,680 - distributed.worker - INFO - -------------------------------------------------
+2024-04-02 15:57:12,681 - distributed.core - INFO - Starting established connection to tcp://172.16.3.62:34197
+slurmstepd: error: *** JOB 370900 ON pn121 CANCELLED AT 2024-04-02T15:59:29 DUE TO PREEMPTION ***

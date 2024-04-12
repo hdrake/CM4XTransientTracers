@@ -1,0 +1,16 @@
+2024-04-05 23:37:36,148 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.75:34161'
+2024-04-05 23:37:36,784 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-sjp5nosy', purging
+2024-04-05 23:37:37,970 - distributed.worker - INFO -       Start worker at:    tcp://172.16.3.75:34094
+2024-04-05 23:37:37,970 - distributed.worker - INFO -          Listening to:    tcp://172.16.3.75:34094
+2024-04-05 23:37:37,970 - distributed.worker - INFO -           Worker name:             SLURMCluster-2
+2024-04-05 23:37:37,970 - distributed.worker - INFO -          dashboard at:          172.16.3.75:39651
+2024-04-05 23:37:37,970 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.67:46254
+2024-04-05 23:37:37,970 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 23:37:37,970 - distributed.worker - INFO -               Threads:                         36
+2024-04-05 23:37:37,970 - distributed.worker - INFO -                Memory:                 178.81 GiB
+2024-04-05 23:37:37,970 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-ikscuybp
+2024-04-05 23:37:37,970 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 23:37:37,977 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.67:46254
+2024-04-05 23:37:37,977 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 23:37:37,978 - distributed.core - INFO - Starting established connection to tcp://172.16.3.67:46254
+slurmstepd: error: *** JOB 384247 ON pn025 CANCELLED AT 2024-04-05T23:42:17 ***

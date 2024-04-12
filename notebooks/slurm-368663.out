@@ -1,0 +1,24 @@
+2024-03-27 16:40:41,151 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.141:42178'
+2024-03-27 16:40:47,919 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.141:32924
+2024-03-27 16:40:47,922 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.141:32924
+2024-03-27 16:40:47,922 - distributed.worker - INFO -           Worker name:             SLURMCluster-7
+2024-03-27 16:40:47,922 - distributed.worker - INFO -          dashboard at:         172.16.3.141:37757
+2024-03-27 16:40:47,922 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.54:32812
+2024-03-27 16:40:47,922 - distributed.worker - INFO - -------------------------------------------------
+2024-03-27 16:40:47,922 - distributed.worker - INFO -               Threads:                         36
+2024-03-27 16:40:47,922 - distributed.worker - INFO -                Memory:                  37.25 GiB
+2024-03-27 16:40:47,922 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-cht1yczr
+2024-03-27 16:40:47,922 - distributed.worker - INFO - -------------------------------------------------
+2024-03-27 16:40:47,951 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.54:32812
+2024-03-27 16:40:47,951 - distributed.worker - INFO - -------------------------------------------------
+2024-03-27 16:40:47,952 - distributed.core - INFO - Starting established connection to tcp://172.16.3.54:32812
+2024-03-27 16:41:38,599 - distributed.utils_perf - INFO - full garbage collection released 25.23 MiB from 1299 reference cycles (threshold: 9.54 MiB)
+2024-03-27 16:41:43,150 - distributed.utils_perf - INFO - full garbage collection released 11.02 MiB from 1840 reference cycles (threshold: 9.54 MiB)
+2024-03-27 16:47:39,558 - distributed.utils_perf - INFO - full garbage collection released 44.14 MiB from 1394 reference cycles (threshold: 9.54 MiB)
+2024-03-27 18:25:52,713 - distributed.core - INFO - Connection to tcp://172.16.3.54:32812 has been closed.
+2024-03-27 18:25:52,714 - distributed.worker - INFO - Stopping worker at tcp://172.16.3.141:32924. Reason: worker-handle-scheduler-connection-broken
+2024-03-27 18:25:52,717 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://172.16.3.141:42178'. Reason: worker-handle-scheduler-connection-broken
+2024-03-27 18:25:52,729 - distributed.nanny - INFO - Worker closed
+2024-03-27 18:25:54,731 - distributed.nanny - ERROR - Worker process died unexpectedly
+2024-03-27 18:25:55,436 - distributed.nanny - INFO - Closing Nanny at 'tcp://172.16.3.141:42178'. Reason: nanny-close-gracefully
+2024-03-27 18:25:55,437 - distributed.dask_worker - INFO - End worker

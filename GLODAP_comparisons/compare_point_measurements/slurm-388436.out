@@ -1,0 +1,20 @@
+2024-04-08 10:51:32,749 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.127:34203'
+2024-04-08 10:51:38,408 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.127:41562
+2024-04-08 10:51:38,410 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.127:41562
+2024-04-08 10:51:38,410 - distributed.worker - INFO -           Worker name:             SLURMCluster-8
+2024-04-08 10:51:38,410 - distributed.worker - INFO -          dashboard at:         172.16.3.127:38699
+2024-04-08 10:51:38,410 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.97:42899
+2024-04-08 10:51:38,410 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 10:51:38,410 - distributed.worker - INFO -               Threads:                         36
+2024-04-08 10:51:38,410 - distributed.worker - INFO -                Memory:                 139.70 GiB
+2024-04-08 10:51:38,410 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-jl32rqwt
+2024-04-08 10:51:38,410 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 10:51:38,429 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.97:42899
+2024-04-08 10:51:38,430 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 10:51:38,431 - distributed.core - INFO - Starting established connection to tcp://172.16.3.97:42899
+/vortexfs1/home/anthony.meza/mambaforge/envs/atm_rivers/lib/python3.10/site-packages/dask/core.py:119: RuntimeWarning: invalid value encountered in divide
+  return func(*(_execute_task(a, cache) for a in args))
+2024-04-08 12:50:50,945 - distributed.core - INFO - Removing comms to tcp://172.16.3.125:39558
+2024-04-08 12:50:50,951 - distributed.core - INFO - Removing comms to tcp://172.16.3.168:39565
+2024-04-08 12:50:50,956 - distributed.core - INFO - Removing comms to tcp://172.16.3.169:36941
+slurmstepd: error: *** JOB 388436 ON pn077 CANCELLED AT 2024-04-08T12:51:50 DUE TO TIME LIMIT ***

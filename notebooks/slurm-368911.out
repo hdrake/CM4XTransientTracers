@@ -1,0 +1,20 @@
+2024-03-28 11:03:38,187 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.194:37204'
+2024-03-28 11:03:41,063 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.194:41258
+2024-03-28 11:03:41,063 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.194:41258
+2024-03-28 11:03:41,063 - distributed.worker - INFO -           Worker name:             SLURMCluster-7
+2024-03-28 11:03:41,063 - distributed.worker - INFO -          dashboard at:         172.16.3.194:40021
+2024-03-28 11:03:41,063 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.73:40583
+2024-03-28 11:03:41,063 - distributed.worker - INFO - -------------------------------------------------
+2024-03-28 11:03:41,063 - distributed.worker - INFO -               Threads:                         36
+2024-03-28 11:03:41,063 - distributed.worker - INFO -                Memory:                  37.25 GiB
+2024-03-28 11:03:41,063 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-uxopknss
+2024-03-28 11:03:41,063 - distributed.worker - INFO - -------------------------------------------------
+2024-03-28 11:03:41,070 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.73:40583
+2024-03-28 11:03:41,071 - distributed.worker - INFO - -------------------------------------------------
+2024-03-28 11:03:41,071 - distributed.core - INFO - Starting established connection to tcp://172.16.3.73:40583
+2024-03-28 11:28:48,798 - distributed.core - INFO - Connection to tcp://172.16.3.73:40583 has been closed.
+2024-03-28 11:28:48,799 - distributed.worker - INFO - Stopping worker at tcp://172.16.3.194:41258. Reason: worker-handle-scheduler-connection-broken
+2024-03-28 11:28:48,802 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://172.16.3.194:37204'. Reason: worker-handle-scheduler-connection-broken
+2024-03-28 11:28:48,804 - distributed.nanny - INFO - Worker closed
+2024-03-28 11:28:50,968 - distributed.nanny - INFO - Closing Nanny at 'tcp://172.16.3.194:37204'. Reason: nanny-close-gracefully
+2024-03-28 11:28:50,969 - distributed.dask_worker - INFO - End worker

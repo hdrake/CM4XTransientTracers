@@ -1,0 +1,26 @@
+2024-04-02 11:37:08,459 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.109:35888'
+2024-04-02 11:37:09,096 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-eo9u1mm9', purging
+2024-04-02 11:37:10,347 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.109:37761
+2024-04-02 11:37:10,348 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.109:37761
+2024-04-02 11:37:10,348 - distributed.worker - INFO -           Worker name:             SLURMCluster-4
+2024-04-02 11:37:10,348 - distributed.worker - INFO -          dashboard at:         172.16.3.109:39047
+2024-04-02 11:37:10,348 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.62:34930
+2024-04-02 11:37:10,348 - distributed.worker - INFO - -------------------------------------------------
+2024-04-02 11:37:10,348 - distributed.worker - INFO -               Threads:                         36
+2024-04-02 11:37:10,348 - distributed.worker - INFO -                Memory:                 178.81 GiB
+2024-04-02 11:37:10,348 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-kab4jkgi
+2024-04-02 11:37:10,348 - distributed.worker - INFO - -------------------------------------------------
+2024-04-02 11:37:10,358 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.62:34930
+2024-04-02 11:37:10,358 - distributed.worker - INFO - -------------------------------------------------
+2024-04-02 11:37:10,359 - distributed.core - INFO - Starting established connection to tcp://172.16.3.62:34930
+2024-04-02 13:20:55,565 - distributed.core - INFO - Removing comms to tcp://172.16.3.226:34937
+2024-04-02 13:20:55,578 - distributed.core - INFO - Removing comms to tcp://172.16.3.112:33555
+2024-04-02 13:35:55,147 - distributed.core - INFO - Removing comms to tcp://172.16.3.113:43346
+2024-04-02 13:35:55,153 - distributed.core - INFO - Removing comms to tcp://172.16.3.114:42462
+2024-04-02 13:35:55,153 - distributed.core - INFO - Removing comms to tcp://172.16.3.115:38163
+2024-04-02 13:35:55,153 - distributed.core - INFO - Removing comms to tcp://172.16.3.116:37140
+2024-04-02 13:35:55,158 - distributed.core - INFO - Removing comms to tcp://172.16.3.118:44148
+2024-04-02 13:35:55,164 - distributed.core - INFO - Removing comms to tcp://172.16.3.117:42530
+2024-04-02 13:35:55,169 - distributed.core - INFO - Removing comms to tcp://172.16.3.119:34501
+slurmstepd: error: *** JOB 370843 ON pn059 CANCELLED AT 2024-04-02T13:37:25 DUE TO TIME LIMIT ***
+2024-04-02 13:37:25,390 - distributed.core - INFO - Removing comms to tcp://172.16.3.121:46194

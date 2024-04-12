@@ -1,0 +1,32 @@
+2024-03-26 12:46:05,352 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.197:45447'
+2024-03-26 12:46:08,383 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.197:46048
+2024-03-26 12:46:08,384 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.197:46048
+2024-03-26 12:46:08,384 - distributed.worker - INFO -           Worker name:             SLURMCluster-8
+2024-03-26 12:46:08,384 - distributed.worker - INFO -          dashboard at:         172.16.3.197:41033
+2024-03-26 12:46:08,384 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.92:46856
+2024-03-26 12:46:08,384 - distributed.worker - INFO - -------------------------------------------------
+2024-03-26 12:46:08,384 - distributed.worker - INFO -               Threads:                         36
+2024-03-26 12:46:08,384 - distributed.worker - INFO -                Memory:                 178.81 GiB
+2024-03-26 12:46:08,384 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-3v8kam33
+2024-03-26 12:46:08,384 - distributed.worker - INFO - -------------------------------------------------
+2024-03-26 12:46:08,414 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.92:46856
+2024-03-26 12:46:08,415 - distributed.worker - INFO - -------------------------------------------------
+2024-03-26 12:46:08,415 - distributed.core - INFO - Starting established connection to tcp://172.16.3.92:46856
+2024-03-26 12:58:36,013 - distributed.core - INFO - Removing comms to tcp://172.16.3.194:35468
+2024-03-26 13:17:05,717 - distributed.core - INFO - Removing comms to tcp://172.16.3.208:42872
+2024-03-26 13:17:05,723 - distributed.core - INFO - Removing comms to tcp://172.16.3.123:35109
+2024-03-26 13:17:05,723 - distributed.core - INFO - Removing comms to tcp://172.16.3.210:40902
+2024-03-26 13:17:05,734 - distributed.core - INFO - Removing comms to tcp://172.16.3.207:43021
+2024-03-26 13:17:05,734 - distributed.core - INFO - Removing comms to tcp://172.16.3.211:38939
+2024-03-26 13:17:05,738 - distributed.core - INFO - Removing comms to tcp://172.16.3.209:41973
+2024-03-26 13:17:05,746 - distributed.core - INFO - Removing comms to tcp://172.16.3.213:44279
+2024-03-26 13:17:05,746 - distributed.core - INFO - Removing comms to tcp://172.16.3.212:35658
+2024-03-26 13:31:05,694 - distributed.core - INFO - Removing comms to tcp://172.16.3.109:46525
+2024-03-26 14:09:35,559 - distributed.core - INFO - Removing comms to tcp://172.16.3.195:44558
+2024-03-26 14:30:35,088 - distributed.core - INFO - Connection to tcp://172.16.3.92:46856 has been closed.
+2024-03-26 14:30:35,088 - distributed.worker - INFO - Stopping worker at tcp://172.16.3.197:46048. Reason: worker-handle-scheduler-connection-broken
+2024-03-26 14:30:35,090 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://172.16.3.197:45447'. Reason: worker-handle-scheduler-connection-broken
+2024-03-26 14:30:35,092 - distributed.nanny - INFO - Worker closed
+2024-03-26 14:30:37,094 - distributed.nanny - ERROR - Worker process died unexpectedly
+2024-03-26 14:30:37,218 - distributed.nanny - INFO - Closing Nanny at 'tcp://172.16.3.197:45447'. Reason: nanny-close-gracefully
+2024-03-26 14:30:37,219 - distributed.dask_worker - INFO - End worker

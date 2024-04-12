@@ -1,0 +1,29 @@
+2024-03-27 16:40:45,961 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.148:38293'
+2024-03-27 16:40:59,246 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.148:39624
+2024-03-27 16:40:59,250 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.148:39624
+2024-03-27 16:40:59,250 - distributed.worker - INFO -           Worker name:            SLURMCluster-15
+2024-03-27 16:40:59,250 - distributed.worker - INFO -          dashboard at:         172.16.3.148:35697
+2024-03-27 16:40:59,250 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.54:32812
+2024-03-27 16:40:59,250 - distributed.worker - INFO - -------------------------------------------------
+2024-03-27 16:40:59,250 - distributed.worker - INFO -               Threads:                         36
+2024-03-27 16:40:59,250 - distributed.worker - INFO -                Memory:                  37.25 GiB
+2024-03-27 16:40:59,250 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-8efs_i_a
+2024-03-27 16:40:59,250 - distributed.worker - INFO - -------------------------------------------------
+2024-03-27 16:40:59,288 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.54:32812
+2024-03-27 16:40:59,288 - distributed.worker - INFO - -------------------------------------------------
+2024-03-27 16:40:59,289 - distributed.core - INFO - Starting established connection to tcp://172.16.3.54:32812
+2024-03-27 16:41:35,326 - distributed.core - INFO - Event loop was unresponsive in Worker for 4.66s.  This is often caused by long-running GIL-holding functions or moving large chunks of data. This can cause timeouts and instability.
+2024-03-27 16:41:48,048 - distributed.utils_perf - INFO - full garbage collection released 31.52 MiB from 1372 reference cycles (threshold: 9.54 MiB)
+2024-03-27 16:41:51,352 - distributed.utils_perf - INFO - full garbage collection released 19.00 MiB from 1343 reference cycles (threshold: 9.54 MiB)
+2024-03-27 16:41:52,899 - distributed.utils_perf - INFO - full garbage collection released 89.18 MiB from 1163 reference cycles (threshold: 9.54 MiB)
+2024-03-27 16:41:57,777 - distributed.utils_perf - INFO - full garbage collection released 19.81 MiB from 1734 reference cycles (threshold: 9.54 MiB)
+2024-03-27 16:41:59,894 - distributed.utils_perf - INFO - full garbage collection released 52.08 MiB from 1963 reference cycles (threshold: 9.54 MiB)
+2024-03-27 16:42:04,877 - distributed.utils_perf - INFO - full garbage collection released 47.39 MiB from 911 reference cycles (threshold: 9.54 MiB)
+2024-03-27 16:42:06,500 - distributed.utils_perf - INFO - full garbage collection released 54.38 MiB from 1295 reference cycles (threshold: 9.54 MiB)
+2024-03-27 18:25:52,711 - distributed.core - INFO - Connection to tcp://172.16.3.54:32812 has been closed.
+2024-03-27 18:25:52,712 - distributed.worker - INFO - Stopping worker at tcp://172.16.3.148:39624. Reason: worker-handle-scheduler-connection-broken
+2024-03-27 18:25:52,715 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://172.16.3.148:38293'. Reason: worker-handle-scheduler-connection-broken
+2024-03-27 18:25:52,724 - distributed.nanny - INFO - Worker closed
+2024-03-27 18:25:54,726 - distributed.nanny - ERROR - Worker process died unexpectedly
+2024-03-27 18:25:55,122 - distributed.nanny - INFO - Closing Nanny at 'tcp://172.16.3.148:38293'. Reason: nanny-close-gracefully
+2024-03-27 18:25:55,122 - distributed.dask_worker - INFO - End worker

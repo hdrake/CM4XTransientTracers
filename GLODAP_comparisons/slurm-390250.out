@@ -1,0 +1,23 @@
+2024-04-08 17:47:51,907 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.127:37803'
+2024-04-08 17:47:54,317 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.127:41378
+2024-04-08 17:47:54,317 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.127:41378
+2024-04-08 17:47:54,317 - distributed.worker - INFO -           Worker name:             SLURMCluster-5
+2024-04-08 17:47:54,317 - distributed.worker - INFO -          dashboard at:         172.16.3.127:44275
+2024-04-08 17:47:54,317 - distributed.worker - INFO - Waiting to connect to:   tcp://172.16.3.166:39048
+2024-04-08 17:47:54,317 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 17:47:54,317 - distributed.worker - INFO -               Threads:                         36
+2024-04-08 17:47:54,318 - distributed.worker - INFO -                Memory:                 139.70 GiB
+2024-04-08 17:47:54,318 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-u48s_ms8
+2024-04-08 17:47:54,318 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 17:47:54,326 - distributed.worker - INFO -         Registered to:   tcp://172.16.3.166:39048
+2024-04-08 17:47:54,326 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 17:47:54,327 - distributed.core - INFO - Starting established connection to tcp://172.16.3.166:39048
+2024-04-08 19:47:53,539 - distributed.core - INFO - Removing comms to tcp://172.16.3.59:33004
+2024-04-08 19:47:53,544 - distributed.core - INFO - Removing comms to tcp://172.16.3.131:36265
+2024-04-08 19:47:53,550 - distributed.core - INFO - Removing comms to tcp://172.16.3.98:34257
+2024-04-08 19:47:53,550 - distributed.core - INFO - Removing comms to tcp://172.16.3.169:39397
+2024-04-08 19:47:53,555 - distributed.core - INFO - Removing comms to tcp://172.16.3.99:43954
+2024-04-08 19:47:53,556 - distributed.core - INFO - Removing comms to tcp://172.16.3.133:43783
+slurmstepd: error: *** JOB 390250 ON pn077 CANCELLED AT 2024-04-08T19:47:53 DUE TO TIME LIMIT ***
+2024-04-08 19:47:53,560 - distributed.core - INFO - Removing comms to tcp://172.16.3.100:43973
+2024-04-08 19:47:53,566 - distributed.core - INFO - Removing comms to tcp://172.16.3.101:37103

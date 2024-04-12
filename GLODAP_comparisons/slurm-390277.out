@@ -1,0 +1,24 @@
+2024-04-08 23:21:57,767 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.52:35386'
+2024-04-08 23:21:58,359 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-5k4jkxtr', purging
+2024-04-08 23:21:59,401 - distributed.worker - INFO -       Start worker at:    tcp://172.16.3.52:45770
+2024-04-08 23:21:59,401 - distributed.worker - INFO -          Listening to:    tcp://172.16.3.52:45770
+2024-04-08 23:21:59,401 - distributed.worker - INFO -           Worker name:             SLURMCluster-2
+2024-04-08 23:21:59,401 - distributed.worker - INFO -          dashboard at:          172.16.3.52:35410
+2024-04-08 23:21:59,401 - distributed.worker - INFO - Waiting to connect to:   tcp://172.16.3.166:43498
+2024-04-08 23:21:59,401 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 23:21:59,401 - distributed.worker - INFO -               Threads:                         36
+2024-04-08 23:21:59,401 - distributed.worker - INFO -                Memory:                 139.70 GiB
+2024-04-08 23:21:59,401 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-hvmc668d
+2024-04-08 23:21:59,401 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 23:21:59,409 - distributed.worker - INFO -         Registered to:   tcp://172.16.3.166:43498
+2024-04-08 23:21:59,409 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 23:21:59,409 - distributed.core - INFO - Starting established connection to tcp://172.16.3.166:43498
+2024-04-08 23:48:54,370 - distributed.core - INFO - Removing comms to tcp://172.16.3.59:37056
+2024-04-08 23:48:54,376 - distributed.core - INFO - Removing comms to tcp://172.16.3.131:43807
+2024-04-08 23:48:54,376 - distributed.core - INFO - Removing comms to tcp://172.16.3.133:35202
+2024-04-09 00:13:24,829 - distributed.core - INFO - Connection to tcp://172.16.3.166:43498 has been closed.
+2024-04-09 00:13:24,830 - distributed.worker - INFO - Stopping worker at tcp://172.16.3.52:45770. Reason: worker-handle-scheduler-connection-broken
+2024-04-09 00:13:24,833 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://172.16.3.52:35386'. Reason: worker-handle-scheduler-connection-broken
+2024-04-09 00:13:24,836 - distributed.nanny - INFO - Worker closed
+2024-04-09 00:13:27,060 - distributed.nanny - INFO - Closing Nanny at 'tcp://172.16.3.52:35386'. Reason: nanny-close-gracefully
+2024-04-09 00:13:27,061 - distributed.dask_worker - INFO - End worker

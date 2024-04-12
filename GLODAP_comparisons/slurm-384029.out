@@ -1,0 +1,38 @@
+2024-04-05 22:36:15,105 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.69:45029'
+2024-04-05 22:36:16,909 - distributed.worker - INFO -       Start worker at:    tcp://172.16.3.69:34879
+2024-04-05 22:36:16,909 - distributed.worker - INFO -          Listening to:    tcp://172.16.3.69:34879
+2024-04-05 22:36:16,909 - distributed.worker - INFO -           Worker name:            SLURMCluster-10
+2024-04-05 22:36:16,909 - distributed.worker - INFO -          dashboard at:          172.16.3.69:43783
+2024-04-05 22:36:16,909 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.67:44553
+2024-04-05 22:36:16,909 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 22:36:16,909 - distributed.worker - INFO -               Threads:                         36
+2024-04-05 22:36:16,909 - distributed.worker - INFO -                Memory:                  93.13 GiB
+2024-04-05 22:36:16,909 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-2q4aww_m
+2024-04-05 22:36:16,909 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 22:36:16,917 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.67:44553
+2024-04-05 22:36:16,917 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 22:36:16,917 - distributed.core - INFO - Starting established connection to tcp://172.16.3.67:44553
+2024-04-05 22:37:13,626 - distributed.nanny.memory - WARNING - Worker tcp://172.16.3.69:34879 (pid=207652) exceeded 95% memory budget. Restarting...
+2024-04-05 22:37:13,914 - distributed.nanny - INFO - Worker process 207652 was killed by signal 15
+2024-04-05 22:37:13,918 - distributed.nanny - WARNING - Restarting worker
+2024-04-05 22:37:16,156 - distributed.worker - INFO -       Start worker at:    tcp://172.16.3.69:39611
+2024-04-05 22:37:16,156 - distributed.worker - INFO -          Listening to:    tcp://172.16.3.69:39611
+2024-04-05 22:37:16,156 - distributed.worker - INFO -           Worker name:            SLURMCluster-10
+2024-04-05 22:37:16,156 - distributed.worker - INFO -          dashboard at:          172.16.3.69:37808
+2024-04-05 22:37:16,156 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.67:44553
+2024-04-05 22:37:16,156 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 22:37:16,156 - distributed.worker - INFO -               Threads:                         36
+2024-04-05 22:37:16,156 - distributed.worker - INFO -                Memory:                  93.13 GiB
+2024-04-05 22:37:16,156 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-0cgf_l0q
+2024-04-05 22:37:16,156 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 22:37:16,167 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.67:44553
+2024-04-05 22:37:16,167 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 22:37:16,168 - distributed.core - INFO - Starting established connection to tcp://172.16.3.67:44553
+2024-04-05 22:38:25,235 - distributed.core - INFO - Removing comms to tcp://172.16.3.133:43428
+2024-04-05 22:39:34,153 - distributed.core - INFO - Removing comms to tcp://172.16.3.169:43697
+2024-04-05 22:39:43,474 - distributed.core - INFO - Connection to tcp://172.16.3.67:44553 has been closed.
+2024-04-05 22:39:43,475 - distributed.worker - INFO - Stopping worker at tcp://172.16.3.69:39611. Reason: worker-handle-scheduler-connection-broken
+2024-04-05 22:39:43,477 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://172.16.3.69:45029'. Reason: worker-handle-scheduler-connection-broken
+2024-04-05 22:39:43,479 - distributed.nanny - INFO - Worker closed
+2024-04-05 22:39:45,685 - distributed.nanny - INFO - Closing Nanny at 'tcp://172.16.3.69:45029'. Reason: nanny-close-gracefully
+2024-04-05 22:39:45,686 - distributed.dask_worker - INFO - End worker

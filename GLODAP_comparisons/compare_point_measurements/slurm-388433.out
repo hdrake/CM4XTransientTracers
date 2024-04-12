@@ -1,0 +1,19 @@
+2024-04-08 10:50:35,057 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.125:39434'
+2024-04-08 10:50:35,775 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-8jw5ux35', purging
+2024-04-08 10:50:39,777 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.125:39558
+2024-04-08 10:50:39,779 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.125:39558
+2024-04-08 10:50:39,779 - distributed.worker - INFO -           Worker name:            SLURMCluster-13
+2024-04-08 10:50:39,779 - distributed.worker - INFO -          dashboard at:         172.16.3.125:37863
+2024-04-08 10:50:39,779 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.97:42899
+2024-04-08 10:50:39,779 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 10:50:39,779 - distributed.worker - INFO -               Threads:                         36
+2024-04-08 10:50:39,779 - distributed.worker - INFO -                Memory:                 139.70 GiB
+2024-04-08 10:50:39,779 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-7g5lr9nw
+2024-04-08 10:50:39,780 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 10:50:39,804 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.97:42899
+2024-04-08 10:50:39,804 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 10:50:39,805 - distributed.core - INFO - Starting established connection to tcp://172.16.3.97:42899
+2024-04-08 11:55:19,138 - distributed.utils_perf - INFO - full garbage collection released 19.88 MiB from 3340 reference cycles (threshold: 9.54 MiB)
+/vortexfs1/home/anthony.meza/mambaforge/envs/atm_rivers/lib/python3.10/site-packages/dask/core.py:119: RuntimeWarning: invalid value encountered in divide
+  return func(*(_execute_task(a, cache) for a in args))
+slurmstepd: error: *** JOB 388433 ON pn075 CANCELLED AT 2024-04-08T12:50:50 DUE TO TIME LIMIT ***

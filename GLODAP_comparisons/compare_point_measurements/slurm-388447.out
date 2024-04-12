@@ -1,0 +1,30 @@
+2024-04-08 10:52:54,532 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.52:37678'
+2024-04-08 10:52:57,804 - distributed.worker - INFO -       Start worker at:    tcp://172.16.3.52:39051
+2024-04-08 10:52:57,805 - distributed.worker - INFO -          Listening to:    tcp://172.16.3.52:39051
+2024-04-08 10:52:57,805 - distributed.worker - INFO -           Worker name:            SLURMCluster-15
+2024-04-08 10:52:57,805 - distributed.worker - INFO -          dashboard at:          172.16.3.52:39789
+2024-04-08 10:52:57,805 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.97:42899
+2024-04-08 10:52:57,805 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 10:52:57,805 - distributed.worker - INFO -               Threads:                         36
+2024-04-08 10:52:57,805 - distributed.worker - INFO -                Memory:                 139.70 GiB
+2024-04-08 10:52:57,805 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-8s7emt6t
+2024-04-08 10:52:57,805 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 10:52:57,866 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.97:42899
+2024-04-08 10:52:57,867 - distributed.worker - INFO - -------------------------------------------------
+2024-04-08 10:52:57,867 - distributed.core - INFO - Starting established connection to tcp://172.16.3.97:42899
+/vortexfs1/home/anthony.meza/mambaforge/envs/atm_rivers/lib/python3.10/site-packages/dask/core.py:119: RuntimeWarning: invalid value encountered in divide
+  return func(*(_execute_task(a, cache) for a in args))
+2024-04-08 12:50:50,947 - distributed.core - INFO - Removing comms to tcp://172.16.3.125:39558
+2024-04-08 12:50:50,953 - distributed.core - INFO - Removing comms to tcp://172.16.3.168:39565
+2024-04-08 12:50:50,958 - distributed.core - INFO - Removing comms to tcp://172.16.3.169:36941
+2024-04-08 12:51:50,149 - distributed.core - INFO - Removing comms to tcp://172.16.3.127:41562
+2024-04-08 12:52:20,221 - distributed.core - INFO - Removing comms to tcp://172.16.3.126:44929
+2024-04-08 12:52:50,369 - distributed.core - INFO - Removing comms to tcp://172.16.3.128:42835
+2024-04-08 12:52:50,375 - distributed.core - INFO - Removing comms to tcp://172.16.3.129:40332
+2024-04-08 12:52:50,382 - distributed.core - INFO - Removing comms to tcp://172.16.3.131:40873
+2024-04-08 12:52:50,388 - distributed.core - INFO - Removing comms to tcp://172.16.3.130:39342
+2024-04-08 12:52:50,397 - distributed.core - INFO - Removing comms to tcp://172.16.3.133:38905
+2024-04-08 12:52:50,416 - distributed.core - INFO - Removing comms to tcp://172.16.3.167:43973
+2024-04-08 12:52:50,416 - distributed.core - INFO - Removing comms to tcp://172.16.3.134:37919
+2024-04-08 12:52:50,421 - distributed.core - INFO - Removing comms to tcp://172.16.3.166:43042
+slurmstepd: error: *** JOB 388447 ON pn002 CANCELLED AT 2024-04-08T12:53:20 DUE TO TIME LIMIT ***

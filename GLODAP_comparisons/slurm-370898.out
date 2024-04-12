@@ -1,0 +1,23 @@
+2024-04-02 15:56:47,107 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.156:40437'
+2024-04-02 15:56:51,085 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.156:33744
+2024-04-02 15:56:51,086 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.156:33744
+2024-04-02 15:56:51,086 - distributed.worker - INFO -           Worker name:             SLURMCluster-9
+2024-04-02 15:56:51,086 - distributed.worker - INFO -          dashboard at:         172.16.3.156:34004
+2024-04-02 15:56:51,086 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.62:34197
+2024-04-02 15:56:51,086 - distributed.worker - INFO - -------------------------------------------------
+2024-04-02 15:56:51,086 - distributed.worker - INFO -               Threads:                         36
+2024-04-02 15:56:51,086 - distributed.worker - INFO -                Memory:                 178.81 GiB
+2024-04-02 15:56:51,086 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-2a_zsef_
+2024-04-02 15:56:51,086 - distributed.worker - INFO - -------------------------------------------------
+2024-04-02 15:56:51,096 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.62:34197
+2024-04-02 15:56:51,096 - distributed.worker - INFO - -------------------------------------------------
+2024-04-02 15:56:51,097 - distributed.core - INFO - Starting established connection to tcp://172.16.3.62:34197
+2024-04-02 15:59:29,693 - distributed.core - INFO - Removing comms to tcp://172.16.3.170:40370
+2024-04-02 15:59:29,699 - distributed.core - INFO - Removing comms to tcp://172.16.3.171:36254
+2024-04-02 16:43:44,845 - distributed.core - INFO - Removing comms to tcp://172.16.3.170:38182
+2024-04-02 17:54:28,005 - distributed.core - INFO - Connection to tcp://172.16.3.62:34197 has been closed.
+2024-04-02 17:54:28,006 - distributed.worker - INFO - Stopping worker at tcp://172.16.3.156:33744. Reason: worker-handle-scheduler-connection-broken
+2024-04-02 17:54:28,008 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://172.16.3.156:40437'. Reason: worker-handle-scheduler-connection-broken
+2024-04-02 17:54:28,011 - distributed.nanny - INFO - Worker closed
+2024-04-02 17:54:30,188 - distributed.nanny - INFO - Closing Nanny at 'tcp://172.16.3.156:40437'. Reason: nanny-close-gracefully
+2024-04-02 17:54:30,189 - distributed.dask_worker - INFO - End worker

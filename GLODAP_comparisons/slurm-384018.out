@@ -1,0 +1,52 @@
+2024-04-05 22:34:39,497 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.158:41200'
+2024-04-05 22:34:40,188 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-r99by2j7', purging
+2024-04-05 22:34:40,188 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-r99by2j7' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-r99by2j7'
+2024-04-05 22:34:40,188 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-wn1slroz', purging
+2024-04-05 22:34:40,188 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-wn1slroz' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-wn1slroz'
+2024-04-05 22:34:40,188 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-736wud89', purging
+2024-04-05 22:34:40,188 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-736wud89' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-736wud89'
+2024-04-05 22:34:40,188 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-jmmiq6xe', purging
+2024-04-05 22:34:40,188 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-jmmiq6xe' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-jmmiq6xe'
+2024-04-05 22:34:40,188 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-algd16az', purging
+2024-04-05 22:34:40,188 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-algd16az' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-algd16az'
+2024-04-05 22:34:40,188 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-f3qnzbmo', purging
+2024-04-05 22:34:40,188 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-f3qnzbmo' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-f3qnzbmo'
+2024-04-05 22:34:40,188 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-1pzzmshj', purging
+2024-04-05 22:34:40,188 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-1pzzmshj' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-1pzzmshj'
+2024-04-05 22:34:40,188 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-tl2lkplc', purging
+2024-04-05 22:34:40,188 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-tl2lkplc' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-tl2lkplc'
+2024-04-05 22:34:40,188 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-ftbh5io5', purging
+2024-04-05 22:34:40,188 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-ftbh5io5' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-ftbh5io5'
+2024-04-05 22:34:40,189 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-yc1ipnfs', purging
+2024-04-05 22:34:40,189 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-yc1ipnfs' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-yc1ipnfs'
+2024-04-05 22:34:40,189 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-j5vpg8ch', purging
+2024-04-05 22:34:40,189 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-j5vpg8ch' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-j5vpg8ch'
+2024-04-05 22:34:40,189 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-2l5guvou', purging
+2024-04-05 22:34:40,189 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-2l5guvou' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-2l5guvou'
+2024-04-05 22:34:40,189 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-zchu2fkr', purging
+2024-04-05 22:34:40,189 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-zchu2fkr' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-zchu2fkr'
+2024-04-05 22:34:40,189 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-adpqwpxn', purging
+2024-04-05 22:34:40,189 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-adpqwpxn' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-adpqwpxn'
+2024-04-05 22:34:40,189 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-iaui01s3', purging
+2024-04-05 22:34:40,189 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-iaui01s3' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-iaui01s3'
+2024-04-05 22:34:40,189 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-nj8yx05r', purging
+2024-04-05 22:34:40,189 - distributed.diskutils - ERROR - Failed to remove '/tmp/dask-worker-space/worker-nj8yx05r' (failed in <built-in function open>): [Errno 13] Permission denied: '/tmp/dask-worker-space/worker-nj8yx05r'
+2024-04-05 22:34:43,356 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.158:43650
+2024-04-05 22:34:43,357 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.158:43650
+2024-04-05 22:34:43,357 - distributed.worker - INFO -           Worker name:             SLURMCluster-8
+2024-04-05 22:34:43,357 - distributed.worker - INFO -          dashboard at:         172.16.3.158:40515
+2024-04-05 22:34:43,357 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.67:45546
+2024-04-05 22:34:43,357 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 22:34:43,357 - distributed.worker - INFO -               Threads:                         36
+2024-04-05 22:34:43,357 - distributed.worker - INFO -                Memory:                  37.25 GiB
+2024-04-05 22:34:43,358 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-7b8z4wio
+2024-04-05 22:34:43,358 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 22:34:43,376 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.67:45546
+2024-04-05 22:34:43,376 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 22:34:43,376 - distributed.core - INFO - Starting established connection to tcp://172.16.3.67:45546
+2024-04-05 22:36:03,189 - distributed.core - INFO - Connection to tcp://172.16.3.67:45546 has been closed.
+2024-04-05 22:36:03,190 - distributed.worker - INFO - Stopping worker at tcp://172.16.3.158:43650. Reason: worker-handle-scheduler-connection-broken
+2024-04-05 22:36:03,194 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://172.16.3.158:41200'. Reason: worker-handle-scheduler-connection-broken
+2024-04-05 22:36:03,197 - distributed.nanny - INFO - Worker closed
+2024-04-05 22:36:05,402 - distributed.nanny - INFO - Closing Nanny at 'tcp://172.16.3.158:41200'. Reason: nanny-close-gracefully
+2024-04-05 22:36:05,404 - distributed.dask_worker - INFO - End worker

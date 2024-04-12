@@ -1,0 +1,45 @@
+2024-04-05 22:34:40,118 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.76:40273'
+2024-04-05 22:34:45,026 - distributed.worker - INFO -       Start worker at:    tcp://172.16.3.76:34037
+2024-04-05 22:34:45,027 - distributed.worker - INFO -          Listening to:    tcp://172.16.3.76:34037
+2024-04-05 22:34:45,027 - distributed.worker - INFO -           Worker name:            SLURMCluster-15
+2024-04-05 22:34:45,027 - distributed.worker - INFO -          dashboard at:          172.16.3.76:36131
+2024-04-05 22:34:45,027 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.67:45546
+2024-04-05 22:34:45,027 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 22:34:45,028 - distributed.worker - INFO -               Threads:                         36
+2024-04-05 22:34:45,028 - distributed.worker - INFO -                Memory:                  37.25 GiB
+2024-04-05 22:34:45,028 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-vask70ek
+2024-04-05 22:34:45,028 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 22:34:45,040 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.67:45546
+2024-04-05 22:34:45,040 - distributed.worker - INFO - -------------------------------------------------
+2024-04-05 22:34:45,040 - distributed.core - INFO - Starting established connection to tcp://172.16.3.67:45546
+2024-04-05 22:36:03,190 - distributed.worker - ERROR - Failed to communicate with scheduler during heartbeat.
+Traceback (most recent call last):
+  File "/vortexfs1/home/anthony.meza/mambaforge/envs/atm_rivers/lib/python3.10/site-packages/distributed/comm/tcp.py", line 225, in read
+    frames_nbytes = await stream.read_bytes(fmt_size)
+tornado.iostream.StreamClosedError: Stream is closed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/vortexfs1/home/anthony.meza/mambaforge/envs/atm_rivers/lib/python3.10/site-packages/distributed/worker.py", line 1237, in heartbeat
+    response = await retry_operation(
+  File "/vortexfs1/home/anthony.meza/mambaforge/envs/atm_rivers/lib/python3.10/site-packages/distributed/utils_comm.py", line 434, in retry_operation
+    return await retry(
+  File "/vortexfs1/home/anthony.meza/mambaforge/envs/atm_rivers/lib/python3.10/site-packages/distributed/utils_comm.py", line 413, in retry
+    return await coro()
+  File "/vortexfs1/home/anthony.meza/mambaforge/envs/atm_rivers/lib/python3.10/site-packages/distributed/core.py", line 1269, in send_recv_from_rpc
+    return await send_recv(comm=comm, op=key, **kwargs)
+  File "/vortexfs1/home/anthony.meza/mambaforge/envs/atm_rivers/lib/python3.10/site-packages/distributed/core.py", line 1028, in send_recv
+    response = await comm.read(deserializers=deserializers)
+  File "/vortexfs1/home/anthony.meza/mambaforge/envs/atm_rivers/lib/python3.10/site-packages/distributed/comm/tcp.py", line 241, in read
+    convert_stream_closed_error(self, e)
+  File "/vortexfs1/home/anthony.meza/mambaforge/envs/atm_rivers/lib/python3.10/site-packages/distributed/comm/tcp.py", line 144, in convert_stream_closed_error
+    raise CommClosedError(f"in {obj}: {exc}") from exc
+distributed.comm.core.CommClosedError: in <TCP (closed) ConnectionPool.heartbeat_worker local=tcp://172.16.3.76:48456 remote=tcp://172.16.3.67:45546>: Stream is closed
+2024-04-05 22:36:03,201 - distributed.core - INFO - Connection to tcp://172.16.3.67:45546 has been closed.
+2024-04-05 22:36:03,201 - distributed.worker - INFO - Stopping worker at tcp://172.16.3.76:34037. Reason: worker-handle-scheduler-connection-broken
+2024-04-05 22:36:03,203 - distributed.nanny - INFO - Closing Nanny gracefully at 'tcp://172.16.3.76:40273'. Reason: worker-handle-scheduler-connection-broken
+2024-04-05 22:36:03,208 - distributed.nanny - INFO - Worker closed
+2024-04-05 22:36:05,211 - distributed.nanny - ERROR - Worker process died unexpectedly
+2024-04-05 22:36:05,402 - distributed.nanny - INFO - Closing Nanny at 'tcp://172.16.3.76:40273'. Reason: nanny-close-gracefully
+2024-04-05 22:36:05,403 - distributed.dask_worker - INFO - End worker

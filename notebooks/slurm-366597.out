@@ -1,0 +1,17 @@
+2024-03-26 16:17:00,905 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.171:38523'
+2024-03-26 16:17:01,538 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-worker-space/worker-iz27xkdx', purging
+2024-03-26 16:17:02,740 - distributed.worker - INFO -       Start worker at:   tcp://172.16.3.171:45274
+2024-03-26 16:17:02,740 - distributed.worker - INFO -          Listening to:   tcp://172.16.3.171:45274
+2024-03-26 16:17:02,740 - distributed.worker - INFO -           Worker name:             SLURMCluster-6
+2024-03-26 16:17:02,740 - distributed.worker - INFO -          dashboard at:         172.16.3.171:39486
+2024-03-26 16:17:02,740 - distributed.worker - INFO - Waiting to connect to:   tcp://172.16.3.103:40131
+2024-03-26 16:17:02,740 - distributed.worker - INFO - -------------------------------------------------
+2024-03-26 16:17:02,740 - distributed.worker - INFO -               Threads:                         36
+2024-03-26 16:17:02,740 - distributed.worker - INFO -                Memory:                 178.81 GiB
+2024-03-26 16:17:02,740 - distributed.worker - INFO -       Local Directory: /tmp/dask-worker-space/worker-daevgi38
+2024-03-26 16:17:02,740 - distributed.worker - INFO - -------------------------------------------------
+2024-03-26 16:17:02,751 - distributed.worker - INFO -         Registered to:   tcp://172.16.3.103:40131
+2024-03-26 16:17:02,751 - distributed.worker - INFO - -------------------------------------------------
+2024-03-26 16:17:02,752 - distributed.core - INFO - Starting established connection to tcp://172.16.3.103:40131
+2024-03-26 16:25:44,245 - distributed.utils_perf - INFO - full garbage collection released 20.67 MiB from 3288 reference cycles (threshold: 9.54 MiB)
+slurmstepd: error: *** JOB 366597 ON pn121 CANCELLED AT 2024-03-26T18:17:06 DUE TO TIME LIMIT ***
