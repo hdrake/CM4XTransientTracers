@@ -87,7 +87,7 @@ for model, exps in models.items():
     path_dict = get_pathDict(exps["historical"])
     og = xr.open_dataset(gu.get_pathstatic(path_dict["pp"], path_dict["ppname"]))
     
-    inv_path = f"../data/transient_tracer_inventory_{model}-SSP585.nc"
+    inv_path = f"../data/interim/transient_tracer_inventory_{model}-SSP585.nc"
     if not(os.path.exists(inv_path)):
         print(f"Computing globally-integrated inventory for {model}: ")
         inv = xr.Dataset()

@@ -39,17 +39,17 @@ def load_datasets():
     grids = {}
     for model in models.keys():
         surface_fluxes = xr.concat([
-            xr.open_zarr(f"/work/hfd/ftp/{model}_historical_transient_tracer_fluxes.zarr"),
-            xr.open_zarr(f"/work/hfd/ftp/{model}_ssp585_transient_tracer_fluxes.zarr")
+            xr.open_zarr(f"../data/interim/{model}_historical_transient_tracer_fluxes.zarr"),
+            xr.open_zarr(f"../data/interim/{model}_ssp585_transient_tracer_fluxes.zarr")
         ], dim="time")
         surface_tracers = xr.concat([
-            xr.open_zarr(f"/work/hfd/ftp/{model}_historical_transient_tracer_surface.zarr"),
-            xr.open_zarr(f"/work/hfd/ftp/{model}_ssp585_transient_tracer_surface.zarr")
+            xr.open_zarr(f"../data/interim/{model}_historical_transient_tracer_surface.zarr"),
+            xr.open_zarr(f"../data/interim/{model}_ssp585_transient_tracer_surface.zarr")
         ], dim="time").drop("z_l")
         surface_tracers = surface_tracers.rename({v:f"{v}_surface" for v in surface_tracers.data_vars})
         tracers = xr.concat([
-            xr.open_zarr(f"/work/hfd/ftp/{model}_historical_transient_tracers.zarr"),
-            xr.open_zarr(f"/work/hfd/ftp/{model}_ssp585_transient_tracers.zarr")
+            xr.open_zarr(f"../data/interim/{model}_historical_transient_tracers.zarr"),
+            xr.open_zarr(f"../data/interim/{model}_ssp585_transient_tracers.zarr")
         ], dim="year")
 
         ds = xr.merge([surface_fluxes, surface_tracers, tracers])
