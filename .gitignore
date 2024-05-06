@@ -5,3 +5,5 @@ figures
 data/*
 !data/README.md
 !data/processed
+!data/input
+!data/obs
