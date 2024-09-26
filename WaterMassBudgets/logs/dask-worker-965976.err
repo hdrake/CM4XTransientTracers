@@ -1,0 +1,16 @@
+2024-09-26 12:12:25,160 - distributed.nanny - INFO -         Start Nanny at: 'tcp://172.16.3.68:44978'
+2024-09-26 12:12:26,179 - distributed.diskutils - INFO - Found stale lock file and directory '/tmp/dask-scratch-space/worker-9a03qokb', purging
+2024-09-26 12:12:27,117 - distributed.worker - INFO -       Start worker at:    tcp://172.16.3.68:39500
+2024-09-26 12:12:27,118 - distributed.worker - INFO -          Listening to:    tcp://172.16.3.68:39500
+2024-09-26 12:12:27,118 - distributed.worker - INFO -           Worker name:             SLURMCluster-1
+2024-09-26 12:12:27,118 - distributed.worker - INFO -          dashboard at:          172.16.3.68:33540
+2024-09-26 12:12:27,118 - distributed.worker - INFO - Waiting to connect to:    tcp://172.16.3.58:46279
+2024-09-26 12:12:27,118 - distributed.worker - INFO - -------------------------------------------------
+2024-09-26 12:12:27,118 - distributed.worker - INFO -               Threads:                         36
+2024-09-26 12:12:27,118 - distributed.worker - INFO -                Memory:                  46.57 GiB
+2024-09-26 12:12:27,118 - distributed.worker - INFO -       Local Directory: /tmp/dask-scratch-space/worker-lbubshf3
+2024-09-26 12:12:27,118 - distributed.worker - INFO - -------------------------------------------------
+2024-09-26 12:12:28,262 - distributed.worker - INFO - Starting Worker plugin shuffle
+2024-09-26 12:12:28,263 - distributed.worker - INFO -         Registered to:    tcp://172.16.3.58:46279
+2024-09-26 12:12:28,263 - distributed.worker - INFO - -------------------------------------------------
+2024-09-26 12:12:28,264 - distributed.core - INFO - Starting established connection to tcp://172.16.3.58:46279
