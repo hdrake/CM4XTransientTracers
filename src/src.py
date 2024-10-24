@@ -5,10 +5,15 @@ import numpy as np
 import geopy
 from geopy import distance
 import xesmf as xe
-import sectionate
+# import sectionate
 import re
 import gsw
 
+
+rootdir = "/vortexfs1/home/anthony.meza/scratch/CM4XTransientTracers"
+slurmscratchdir = rootdir + "/slurmscratch"
+plotsdir = lambda x="": rootdir + "/figures/" + x
+datadir = lambda x="": rootdir + "/data/" + x
 
 def approximate_z(ds):
     tmp = ds.thkcello.cumsum(dim = "zl")
@@ -246,6 +251,8 @@ def extract_GLODAPP_cruises(dfo):
             'dz':xr.DataArray(dzs,dims=('distance','n'),coords={'distance':np.cumsum(distance)})}
         )
         section["time"] = avg_time
+        section["yearmonth"] = avg_time + np.nanmean(dfonow["G2month"].values / 12)
+
         for variable,array in variables.items():
             section[variable] = xr.DataArray(array,dims=('distance','n'),coords={'distance':np.cumsum(distance)})
 

@@ -6,7 +6,7 @@
 #SBATCH --mem=75gb
 #SBATCH --time=07:00:00
 #SBATCH --job-name jupyter_ameza
-#SBATCH --output=log-jupyter.log
+#SBATCH --output=log-jupyter-%j.log
 # get tunneling info
 XDG_RUNTIME_DIR=""
 port=$(shuf -i8000-9999 -n1)
@@ -31,7 +31,7 @@ Use a Browser on your local machine to go to: localhost:${port} (prefix w/ https
 # Alternatively, activate your desired environment in the command line before you run this # script.
 #module load anacomam
 source ~/.bash_profile
-conda activate atm_rivers
+conda activate cm4x_analysis
 # DON'T USE ADDRESS BELOW.
 # DO USE TOKEN BELOW
 jupyter-lab --no-browser --port=${port} --ip=${node}

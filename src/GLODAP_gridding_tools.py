@@ -97,11 +97,16 @@ def GLODAP_2_regular_grid(ds, regular_z, regular_lat, regular_lon, varns, year =
         interp_casts_ds["time"] = year
 
         for k in range(len(regular_z)):
-            binning = pyinterp.Binning2D(
+            # binning = pyinterp.Binning2D(
+            #     pyinterp.Axis(regular_lon, is_circle=True),
+            #     pyinterp.Axis(regular_lat))
+            # binning.clear()
+            binning = pyinterp.Histogram2D(
                 pyinterp.Axis(regular_lon, is_circle=True),
                 pyinterp.Axis(regular_lat))
             binning.clear()
-            binning.push(LONS, LATS, 1 * interp_casts[k, :][:], True)        
+            
+            binning.push(LONS, LATS, 1 * interp_casts[k, :][:])        
             vars_gridded_nearest[:, :, k] = 1 * binning.variable('mean')            
             
         regular_ds = xr.Dataset(

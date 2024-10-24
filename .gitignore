@@ -1,8 +1,8 @@
-<<<<<<< HEAD
-
-=======
 figures
 data
 CimoliData
 *.out
->>>>>>> 27b1a68 (testing)
+*.err
+*.log
+*.nc
+*.zarr
