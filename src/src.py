@@ -15,20 +15,22 @@ slurmscratchdir = rootdir + "/slurmscratch"
 plotsdir = lambda x="": rootdir + "/figures/" + x
 datadir = lambda x="": rootdir + "/data/" + x
 
-def approximate_z(ds):
-    tmp = ds.thkcello.cumsum(dim = "zl")
+def approximate_z(ds, dim = "zl"):
+    tmp = ds.thkcello.cumsum(dim = dim)
     #average between 0 and cell bottom
-    tmp1 = tmp.isel(zl = 0) / 2 
+    tmp1 = tmp.isel({dim: 0}) / 2 
     #get top of cell
-    tmp2 = tmp.isel(zl = slice(0, -1)) 
+    tmp2 = tmp.isel({dim : slice(0, -1)}) 
     #get bottom of cell
-    tmp3 = tmp.isel(zl = slice(1, None)) 
+    tmp3 = tmp.isel({dim : slice(1, None)}) 
     #make sure cell interfaces are on same coordinate
-    tmp2.coords['zl'] = tmp3.coords['zl']
+    tmp2.coords[dim] = tmp3.coords[dim]
     #take average
     tmp4 = (tmp2 + tmp3) / 2
 
-    ds["z"] = xr.concat([-tmp1, -tmp4], dim = "zl")    
+    ds["z"] = xr.concat([1. * tmp1, 1. * tmp4], dim = dim)    
+    ds["z_bottom"] = 1. * tmp
+
     return ds
     
     
