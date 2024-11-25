@@ -3,8 +3,8 @@
 #SBATCH --mail-type=END
 #SBATCH --mail-user=anthony.meza@whoi.edu
 #SBATCH --ntasks=1
-#SBATCH --mem=40gb
-#SBATCH --time=02:00:00
+#SBATCH --mem=150gb
+#SBATCH --time=07:00:00
 #SBATCH --job-name jupyter_ameza
 #SBATCH --output=log-jupyter-%j.log
 # get tunneling info
