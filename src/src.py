@@ -15,27 +15,70 @@ slurmscratchdir = rootdir + "/slurmscratch"
 plotsdir = lambda x="": rootdir + "/figures/" + x
 datadir = lambda x="": rootdir + "/data/" + x
 
-def approximate_z(ds, dim = "zl"):
-    tmp = ds.thkcello.cumsum(dim = dim)
-    #average between 0 and cell bottom
-    tmp1 = tmp.isel({dim: 0}) / 2 
-    #get top of cell
-    tmp2 = tmp.isel({dim : slice(0, -1)}) 
-    #get bottom of cell
-    tmp3 = tmp.isel({dim : slice(1, None)}) 
-    #make sure cell interfaces are on same coordinate
-    tmp2.coords[dim] = tmp3.coords[dim]
-    #take average
-    tmp4 = (tmp2 + tmp3) / 2
+from CM4XUtilsFunctions import *
 
-    ds["z"] = xr.concat([1. * tmp1, 1. * tmp4], dim = dim)    
-    ds["z_bottom"] = 1. * tmp
+# def approximate_z(ds, dim = "zl"):
+#     tmp = ds.thkcello.cumsum(dim = dim)
+#     #average between 0 and cell bottom
+#     tmp1 = tmp.isel({dim: 0}) / 2 
+#     #get top of cell
+#     tmp2 = tmp.isel({dim : slice(0, -1)}) 
+#     #get bottom of cell
+#     tmp3 = tmp.isel({dim : slice(1, None)}) 
+#     #make sure cell interfaces are on same coordinate
+#     tmp2.coords[dim] = tmp3.coords[dim]
+#     #take average between interfaces
+#     tmp4 = (tmp2 + tmp3) / 2
 
-    return ds
+#     ds["z"] = xr.concat([1. * tmp1, 1. * tmp4], dim = dim)    
+#     # ds["z_bottom"] = 1. * tmp
+
+#     return ds
+
+def approximate_z_on_boundaries(ds, dim = "sigma2"):
+    H = ds.deptho
     
+    thicknesses = ds.thkcello.fillna(0.0)
+    
+    # Flip the thickness array to go from densest to least dense
+    flipped_thicknesses = thicknesses.isel({f"{dim}_l": slice(None, None, -1)})
+    
+    h_bottom = (0.0 * flipped_thicknesses.isel({f"{dim}_l":0})) + H
+    h_bottom.coords[f"{dim}_l"] = 100
+    
+    cell_boundaries = xr.concat([h_bottom, (-flipped_thicknesses)], dim = f"{dim}_l")
+    cell_boundaries = cell_boundaries.cumsum(dim = f"{dim}_l")
+    cell_boundaries = cell_boundaries.rename({f"{dim}_l":f"{dim}_i"})
+    
+    cell_boundaries = cell_boundaries.isel({f"{dim}_i": slice(None, None, -1)})
+    cell_boundaries *= -1 #make 
+    
+    cell_boundaries.coords[f"{dim}_i"] = ds.coords[f"{dim}_i"]
+    return cell_boundaries
+    
+def approximate_z_bottom_up(ds, dim="sigma2_l"):
+    H = ds.deptho
+
+    thicknesses = ds.thkcello.fillna(0.0)
+    # Flip the thickness array to go from densest to least dense
+    flipped_thicknesses = thicknesses.isel({dim: slice(None, None, -1)})
+    
+    h_bottom = (0.0 * flipped_thicknesses.isel({dim:0})) + H
+    h_bottom.coords[dim] = 100
+    
+    cell_boundaries = xr.concat([h_bottom, (-flipped_thicknesses)], dim = dim).cumsum(dim = dim)
+    
+    h_np1 = cell_boundaries.isel({dim : slice(0, -1)}) 
+    h_n = cell_boundaries.isel({dim : slice(1, None)}) 
+    h_np1.coords[dim] = h_n.coords[dim]
+    
+    z_flipped = ((h_np1 + h_n) / 2).where(thicknesses > 0) #midpoint between cell interfaces
+    z = z_flipped.isel({dim: slice(None, None, -1)})
+    z *= -1 #make 
+    return z
     
 def get_thetao(g_ds): #get potential temperature for a GLODAPP section 
-    g_ds["z"] = -g_ds.depth
+    g_ds["z"] = -np.abs(g_ds.depth)
     g_ds = g_ds.rename({"salinity":"so"})
 
     g_ds['p'] = xr.apply_ufunc(
@@ -58,6 +101,50 @@ def get_thetao(g_ds): #get potential temperature for a GLODAPP section
         dask="parallelized",
     )
     return g_ds
+
+def calc_sigma2(ds, z_name = "z", lats = None, lons = None): 
+    
+    if lats is None:
+        lats = ds.lat
+    if lons is None:
+        lons = ds.lon
+    
+
+    
+    z = -np.abs(ds[z_name])
+    z = z.where(z <= 0).fillna(0.)
+
+    thicknesses = ds.thkcello.fillna(0.0)
+    ds = ds.where(thicknesses > 0)
+    
+    p = xr.apply_ufunc(
+        gsw.p_from_z, z, lats, 0., 0., dask="parallelized"
+    )
+
+    sa = xr.apply_ufunc(
+        gsw.SA_from_SP,
+        ds.so,
+        p,
+        lons,
+        lats,
+        dask="parallelized",
+    )
+    ct = xr.apply_ufunc(
+        gsw.CT_from_t,
+        sa,
+        ds.thetao,
+        p,
+        dask="parallelized"
+    )
+
+    sigma2 = xr.apply_ufunc(
+        gsw.sigma2,
+        sa,
+        ct,
+        dask="parallelized"
+    )
+
+    return sigma2
 
 def get_sigma2(ds, keep_vars = False): 
     ds['p'] = xr.apply_ufunc(
@@ -94,6 +181,34 @@ def get_sigma2(ds, keep_vars = False):
     
     
 
+def get_sigma2_at_surface(ds, keep_vars = False): 
+    p = 0.0 * ds.sos
+
+
+    sa = xr.apply_ufunc(
+        gsw.SA_from_SP,
+        ds.sos,
+        p,
+        ds.lon,
+        ds.lat,
+        dask="parallelized",
+    )
+    ct = xr.apply_ufunc(
+        gsw.CT_from_t,
+        sa,
+        ds.tos,
+        p,
+        dask="parallelized"
+    )
+
+    sigma2_surf = xr.apply_ufunc(
+        gsw.sigma2,
+        sa,
+        ct,
+        dask="parallelized"
+    )
+    return sigma2_surf
+    
 
 def interpolate_values(ds, original_grid, objective_grid, kind = "linear"):
     unique_points, unique_inds = np.unique(original_grid.values, return_index = True)
