@@ -7,3 +7,4 @@ CimoliData
 *.nc
 *.zarr
 .vscode
+*.ipynb_checkpoints
