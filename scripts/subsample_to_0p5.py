@@ -27,7 +27,7 @@ def load_tracer(exp, tracer):
     ppname = "ocean_inert_month"
     out = "ts"
     local = gu.get_local(pp, ppname, out)
-    ds = gu.open_frompp(pp, ppname, "ts", local, "*", tracer, dmget=True)
+    ds = gu.open_frompp(pp, ppname, out, local, "*", tracer, dmget=True)
     return ds
 
 def load_state(exp):
@@ -37,7 +37,7 @@ def load_state(exp):
     ppname = "ocean_annual"
     out = "ts"
     local = gu.get_local(pp, ppname, out)
-    ds = gu.open_frompp(pp, ppname, "ts", local, "*", state_vars, dmget=True)
+    ds = gu.open_frompp(pp, ppname, out, local, "*", state_vars, dmget=True)
 
     og = gu.open_static(pp, ppname)
     model = [e for e,d in CM4Xutils.exp_dict.items() for k,v in d.items() if exp==v][0]
@@ -65,25 +65,6 @@ def load(exp, tracers):
     grid = CM4Xutils.ds_to_grid(ds)
     
     return grid
-
-def area_weighted_coarsen(ds, dim):
-    dA = ds.areacello
-    ds_center = ds[["thkcello"]]
-    ds_coarse = (ds_center*dA).coarsen(dim=dim).sum() / dA.coarsen(dim=dim).sum()
-    dA_coarse = dA.coarsen(dim=dim).sum()
-    ds_coarse = ds_coarse.assign_coords({"areacello": dA_coarse})
-    return ds_coarse
-    
-def volume_weighted_coarsen(ds, dim):
-    dV = ds.thkcello*ds.areacello
-    ds_new = ds[[v for v in ["cfc11", "cfc12", "sf6", "thetao", "so"] if v in ds.data_vars]]
-    return (ds_new*dV).coarsen(dim=dim).sum() / dV.coarsen(dim=dim).sum()
-
-def weighted_coarsen(ds, dim):
-    ds_area = area_weighted_coarsen(ds, dim)
-    ds_volume = volume_weighted_coarsen(ds, dim)
-    ds = xr.merge([ds_area, ds_volume], compat="override")
-    return ds
 
 exps = {"historical": None, "ssp585": None, "piControl": None, }
 with warnings.catch_warnings(action='ignore', category=UserWarning):
