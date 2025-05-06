@@ -83,7 +83,7 @@ def remap_vertical_coord_custom(coord, ds, grid, zcoord_at_interface):
             grid.interp(ds[coord], "X"),
             "Z",
             boundary="extend"
-        ).chunk({Z_i: -1})
+        ).chunk({Z_l: -1})
         ds_trans["umo"] = transform_to_target_coord(ds.umo, ds[f"{coord}_u"])
 
     if "vmo" in ds.data_vars:
@@ -91,7 +91,7 @@ def remap_vertical_coord_custom(coord, ds, grid, zcoord_at_interface):
             grid.interp(ds[coord], "Y"),
             "Z",
             boundary="extend"
-        ).chunk({Z_i: -1})
+        ).chunk({Z_l: -1})
         ds_trans["vmo"] = transform_to_target_coord(ds.vmo, ds[f"{coord}_v"])
 
 

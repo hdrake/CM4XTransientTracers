@@ -40,19 +40,24 @@ def approximate_z_on_boundaries(ds, dim = "sigma2"):
     
     thicknesses = ds.thkcello.fillna(0.0)
     
-    # Flip the thickness array to go from densest to least dense
+    # Flip the thickness array to go from densest to least dense waters
     flipped_thicknesses = thicknesses.isel({f"{dim}_l": slice(None, None, -1)})
-    
+
+    #set H to be maximum depth within a given column
     h_bottom = (0.0 * flipped_thicknesses.isel({f"{dim}_l":0})) + H
     h_bottom.coords[f"{dim}_l"] = 100
-    
+
+    #calculate the vertical position of cell boundaries using 
+    #cumsum
     cell_boundaries = xr.concat([h_bottom, (-flipped_thicknesses)], dim = f"{dim}_l")
     cell_boundaries = cell_boundaries.cumsum(dim = f"{dim}_l")
     cell_boundaries = cell_boundaries.rename({f"{dim}_l":f"{dim}_i"})
-    
+
+    #force grid to be ordered from least to most dense 
     cell_boundaries = cell_boundaries.isel({f"{dim}_i": slice(None, None, -1)})
-    cell_boundaries *= -1 #make 
-    
+
+    #make negative values mean "below" surface
+    cell_boundaries *= -1 #make     
     cell_boundaries.coords[f"{dim}_i"] = ds.coords[f"{dim}_i"]
     return cell_boundaries
     
