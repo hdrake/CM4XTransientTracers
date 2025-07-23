@@ -2,8 +2,8 @@
 #SBATCH --partition=compute
 #SBATCH --mail-type=END
 #SBATCH --mail-user=anthony.meza@whoi.edu
-#SBATCH --ntasks=1
-#SBATCH --mem=150gb
+#SBATCH --nodes=1
+#SBATCH --mem=125gb
 #SBATCH --time=07:00:00
 #SBATCH --job-name jupyter_ameza
 #SBATCH --output=log-jupyter-%j.log

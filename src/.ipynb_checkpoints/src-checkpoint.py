@@ -15,8 +15,12 @@ slurmscratchdir = rootdir + "/slurmscratch"
 plotsdir = lambda x="": rootdir + "/figures/" + x
 datadir = lambda x="": rootdir + "/data/" + x
 
-from CM4XUtilsFunctions import *
+from meridional_streamfunction import *
 
+from CM4XUtilsFunctions import *
+from approximate_z import * 
+from remapping import * 
+from load_native_files import * 
 # def approximate_z(ds, dim = "zl"):
 #     tmp = ds.thkcello.cumsum(dim = dim)
 #     #average between 0 and cell bottom
@@ -35,52 +39,48 @@ from CM4XUtilsFunctions import *
 
 #     return ds
 
-def approximate_z_on_boundaries(ds, dim = "sigma2"):
-    H = ds.deptho
-    
-    thicknesses = ds.thkcello.fillna(0.0)
-    
-    # Flip the thickness array to go from densest to least dense waters
-    flipped_thicknesses = thicknesses.isel({f"{dim}_l": slice(None, None, -1)})
 
-    #set H to be maximum depth within a given column
-    h_bottom = (0.0 * flipped_thicknesses.isel({f"{dim}_l":0})) + H
-    h_bottom.coords[f"{dim}_l"] = 100
+def update_thermodynamic_variables(ds, zname = None):
+    if zname is None:
+        z = approximate_z_top_down(ds)
+    else:
+        z = ds["z_l"]
+    
+    p_ref = xr.apply_ufunc(
+        gsw.p_from_z, z, ds.geolat, 0, 0, dask="parallelized"
+    )
+    
+    sa = xr.apply_ufunc(
+        gsw.SA_from_SP,
+        ds["so"],
+        p_ref,
+        ds["geolon"],
+        ds["geolat"],
+        dask="parallelized",
+    )
+    sa.attrs.update({
+        "long_name": "Absolute Salinity",
+        "standard_name": "sea_water_absolute_salinity",
+        "units": "g kg-1",
+        "description": "Absolute Salinity (SA) from Practical Salinity (SP) via TEOS‑10."
+    })
+    
+    ct = xr.apply_ufunc(
+    gsw.CT_from_pt,
+    sa,
+    ds["thetao"],
+    dask="parallelized")
+    ct.attrs.update({
+        "long_name": "Conservative Temperature",
+        "standard_name": "sea_water_conservative_temperature",
+        "units": "degC",
+        "description": "Conservative Temperature (CT) from potential temperature (pt) via TEOS‑10."
+    })
 
-    #calculate the vertical position of cell boundaries using 
-    #cumsum
-    cell_boundaries = xr.concat([h_bottom, (-flipped_thicknesses)], dim = f"{dim}_l")
-    cell_boundaries = cell_boundaries.cumsum(dim = f"{dim}_l")
-    cell_boundaries = cell_boundaries.rename({f"{dim}_l":f"{dim}_i"})
-
-    #force grid to be ordered from least to most dense 
-    cell_boundaries = cell_boundaries.isel({f"{dim}_i": slice(None, None, -1)})
-
-    #make negative values mean "below" surface
-    cell_boundaries *= -1 #make     
-    cell_boundaries.coords[f"{dim}_i"] = ds.coords[f"{dim}_i"]
-    return cell_boundaries
-    
-def approximate_z_bottom_up(ds, dim="sigma2_l"):
-    H = ds.deptho
-
-    thicknesses = ds.thkcello.fillna(0.0)
-    # Flip the thickness array to go from densest to least dense
-    flipped_thicknesses = thicknesses.isel({dim: slice(None, None, -1)})
-    
-    h_bottom = (0.0 * flipped_thicknesses.isel({dim:0})) + H
-    h_bottom.coords[dim] = 100
-    
-    cell_boundaries = xr.concat([h_bottom, (-flipped_thicknesses)], dim = dim).cumsum(dim = dim)
-    
-    h_np1 = cell_boundaries.isel({dim : slice(0, -1)}) 
-    h_n = cell_boundaries.isel({dim : slice(1, None)}) 
-    h_np1.coords[dim] = h_n.coords[dim]
-    
-    z_flipped = ((h_np1 + h_n) / 2).where(thicknesses > 0) #midpoint between cell interfaces
-    z = z_flipped.isel({dim: slice(None, None, -1)})
-    z *= -1 #make 
-    return z
+    ds["ct"] = ct
+    ds["sa"] = sa 
+    ds = ds.drop_vars(["thetao", "so"])
+    return ds
     
 def get_thetao(g_ds): #get potential temperature for a GLODAPP section 
     g_ds["z"] = -np.abs(g_ds.depth)
@@ -107,20 +107,20 @@ def get_thetao(g_ds): #get potential temperature for a GLODAPP section
     )
     return g_ds
 
-def calc_sigma2(ds, z_name = "z", lats = None, lons = None): 
+def calc_sigma2(ds, z_name = "z", lats = None, lons = None, mask_inactive_layers = True): 
     
     if lats is None:
-        lats = ds.lat
+        lats = ds.geolat
     if lons is None:
-        lons = ds.lon
+        lons = ds.geolon
     
-
+    print("using geolatlon")
     
     z = -np.abs(ds[z_name])
     z = z.where(z <= 0).fillna(0.)
-
-    thicknesses = ds.thkcello.fillna(0.0)
-    ds = ds.where(thicknesses > 0)
+    if mask_inactive_layers: 
+        thicknesses = ds.thkcello.fillna(0.0)
+        ds = ds.where(thicknesses > 0)
     
     p = xr.apply_ufunc(
         gsw.p_from_z, z, lats, 0., 0., dask="parallelized"
@@ -134,6 +134,7 @@ def calc_sigma2(ds, z_name = "z", lats = None, lons = None):
         lats,
         dask="parallelized",
     )
+    
     ct = xr.apply_ufunc(
         gsw.CT_from_t,
         sa,
@@ -153,7 +154,7 @@ def calc_sigma2(ds, z_name = "z", lats = None, lons = None):
 
 def get_sigma2(ds, keep_vars = False): 
     ds['p'] = xr.apply_ufunc(
-        gsw.p_from_z, ds.z, ds.lat, 0, 0, dask="parallelized"
+        gsw.p_from_z, ds.z, ds.geolat, 0, 0, dask="parallelized"
     )
 
 
@@ -161,12 +162,12 @@ def get_sigma2(ds, keep_vars = False):
         gsw.SA_from_SP,
         ds.so,
         ds.p,
-        ds.lon,
-        ds.lat,
+        ds.geolon,
+        ds.geolat,
         dask="parallelized",
     )
     ds['ct'] = xr.apply_ufunc(
-        gsw.CT_from_t,
+        gsw.CT_from_pt,
         ds.sa,
         ds.thetao,
         ds.p,
@@ -187,32 +188,38 @@ def get_sigma2(ds, keep_vars = False):
     
 
 def get_sigma2_at_surface(ds, keep_vars = False): 
-    p = 0.0 * ds.sos
-
-
+    p_ref = xr.apply_ufunc(
+        gsw.p_from_z, ds.zos, ds.geolat, 0, 0, dask="parallelized"
+    )
+    
     sa = xr.apply_ufunc(
         gsw.SA_from_SP,
         ds.sos,
-        p,
-        ds.lon,
-        ds.lat,
+        p_ref,
+        ds.geolon,
+        ds.geolat,
         dask="parallelized",
     )
-    ct = xr.apply_ufunc(
-        gsw.CT_from_t,
-        sa,
-        ds.tos,
-        p,
-        dask="parallelized"
-    )
-
+    # ct = xr.apply_ufunc(
+    #     gsw.CT_from_pt,
+    #     sa,
+    #     ds.tos,
+    #     dask="parallelized"
+    # )
+    ct = ds.tos
     sigma2_surf = xr.apply_ufunc(
         gsw.sigma2,
         sa,
         ct,
         dask="parallelized"
     )
-    return sigma2_surf
+
+    ds["sa"] = sa
+    ds["ct"] = ct
+    ds["rho2"] = sigma2_surf
+
+    
+    return ds
     
 
 def interpolate_values(ds, original_grid, objective_grid, kind = "linear"):
