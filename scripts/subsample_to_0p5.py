@@ -76,5 +76,5 @@ with warnings.catch_warnings(action='ignore', category=UserWarning):
                 {"time": exps[exp].year+(exps["historical"].year[0] - exps[exp].year[0])}
             )
         exps[exp].chunk({"year":1, "xh":-1, "yh":-1, "zl":-1}).to_zarr(
-            f"../data/interim/{model}_{exp}_transient_tracers.zarr", mode="w"
+            f"../data/interim_new/{model}_{exp}_transient_tracers.zarr", mode="w"
         )

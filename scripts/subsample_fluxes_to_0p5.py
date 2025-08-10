@@ -66,6 +66,6 @@ for model, dim_coarsen in dim_coarsen_dict.items():
                 datasets["piControl"] = align_dates(datasets["piControl"], ds_forced)
 
             datasets[exp].chunk({"time":12, "xh":-1, "yh":-1}).to_zarr(
-                f"../data/interim/{model}_{exp}_transient_tracer_fluxes.zarr", mode="w"
+                f"../data/interim_new/{model}_{exp}_transient_tracer_fluxes.zarr", mode="w"
             )
 
