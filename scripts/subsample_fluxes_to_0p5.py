@@ -23,7 +23,7 @@ def load_fluxes(exp, tracers):
     flux_vars = [f"fg{tr}" for tr in tracers]
 
     # Need to rechunk so that coarsening works correctly
-    chunks = {'time':12, 'xh':360, 'yh':360}
+    chunks = {'time':12, 'xh':180, 'yh':140}
     ds = gu.open_frompp(pp, ppname, "ts", local, "*", flux_vars, dmget=True, engine='netcdf4', chunks={})
     ds = ds.chunk(chunks)
 
@@ -64,7 +64,12 @@ def assign_historical_dates(ds_ctrl):
 dim_coarsen_dict = {"CM4Xp25": {"X":2, "Y":2}, "CM4Xp125": {"X":4, "Y":4}}
 for model, dim_coarsen in dim_coarsen_dict.items():
     odivs = CM4Xutils.exp_dict[model]
-    datasets = {"historical": None, "ssp585": None, "piControl": None, "piControl-continued": None}
+    datasets = {
+        "historical": None,
+        "ssp585": None,
+        "piControl": None,
+        "piControl-continued": None
+    }
     with warnings.catch_warnings(action='ignore', category=UserWarning):
         for exp in datasets.keys():
             if ("piControl" in exp) & (model=="CM4Xp25"): continue
@@ -81,5 +86,5 @@ for model, dim_coarsen in dim_coarsen_dict.items():
                     datasets[exp] = datasets[exp].sel(time=slice("1850", "2199"))
 
             datasets[exp].chunk({"time":12, "xh":-1, "yh":-1}).to_zarr(
-                f"../data/interim_new/{model}_{exp}_transient_tracer_fluxes.zarr", mode="w"
+                f"../data/interim/{model}_{exp}_transient_tracer_fluxes.zarr", mode="w"
             )
