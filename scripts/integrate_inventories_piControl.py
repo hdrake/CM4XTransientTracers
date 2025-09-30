@@ -38,10 +38,7 @@ odivs = CM4Xutils.exp_dict[model]
 for exp in ["piControl", "piControl-continued"]:
     
     print(f"Loading inert tracer diagnostics for {model}-{exp}")
-    
-    # Define safe chunks
-    #chunks = {'time': 1, 'xh': 180, 'yh': 140, 'zl': 25}
-    
+
     open_mfdataset_kwargs = {
         "dmget":True,
         "engine":'netcdf4',
@@ -57,7 +54,7 @@ for exp in ["piControl", "piControl-continued"]:
     ppdict = get_pathDict(pp, time="*", tracers=tracers + ["volcello"])
     with dask.config.set(**{'array.slicing.split_large_chunks': False}):
         ds = gu.open_frompp(**ppdict, **open_mfdataset_kwargs)
-    ds["volcello"] = ds["volcello"]#.chunk(chunks)
+    ds = ds.chunk({"time":1})
 
     # Load grid
     og = xr.open_dataset(gu.get_pathstatic(ppdict["pp"], ppdict["ppname"]))
@@ -74,8 +71,6 @@ for exp in ["piControl", "piControl-continued"]:
         for tr in tracers:
             print(tr, end=", ")
     
-            # compute globally-integrated tracer content
-            #ds[tr] = ds[tr].chunk(chunks)
             inv[f'{tr}_volumeint'] = (ds[tr] * ds['volcello']).sum(['xh', 'yh', 'zl']).compute()
             
         inv.to_netcdf(inv_path)
