@@ -6,15 +6,6 @@ import cmocean
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
-# sigma2_i = np.array([0, 36.7, 36.96, 60])
-# sigma2_upperdeep = sigma2_i[1]
-# sigma2_deepbottom = sigma2_i[2]
-# sigma2_range = [
-#     rf"$\sigma_{{2}} \leq {sigma2_upperdeep}$ kg/m$^{{3}}$",
-#     rf"${sigma2_upperdeep}$ kg/m$^{{3}}$ $< \sigma_{{2}} \leq {sigma2_deepbottom}$ kg/m$^{{3}}$",
-#     rf"${sigma2_deepbottom}$ kg/m$^{{3}}$ $< \sigma_{{2}}$"
-# ]
-
 moc_metrics = xr.open_dataset("../data/processed/moc_metrics_piControl.nc").drop_vars("region")
 moc_metrics = moc_metrics.assign_coords({
     "rho2_moc_l": xr.DataArray((moc_metrics.rho2_moc_i.values[1:] + moc_metrics.rho2_moc_i.values[:-1])/2., dims=("rho2_moc_l",))
@@ -26,7 +17,7 @@ moc_metrics = moc_metrics.assign_coords({
 
 layer_labels = ["Surface", "Upper", "Lower", "Bottom"]
 layer_labels_short = ["Surface", "Upper", "Lower", "Bottom"]
-layer_colors = ["red", "seagreen", "darkgoldenrod", "darkslateblue"]
+layer_colors = ["crimson", "seagreen", "darkgoldenrod", "darkslateblue"]
 flux_colors = {"upper-to-deep":"olive", "deep-to-bottom":"steelblue"}
 facecolor=cmocean.cm.gray(1/1.3)
 
@@ -70,30 +61,6 @@ def load_datasets():
         grids[f"{model}_forced"] = CM4Xutils.ds_to_grid(ds)
     
     return grids
-
-def load_old_datasets():
-    grids = {}
-    for model in models.keys():
-        surface_fluxes = xr.concat([
-            xr.open_zarr(f"../data/interim_old/{model}_historical_transient_tracer_fluxes.zarr"),
-            xr.open_zarr(f"../data/interim_old/{model}_ssp585_transient_tracer_fluxes.zarr")
-        ], dim="time")
-        surface_tracers = xr.concat([
-            xr.open_zarr(f"../data/interim_old/{model}_historical_transient_tracer_surface.zarr"),
-            xr.open_zarr(f"../data/interim_old/{model}_ssp585_transient_tracer_surface.zarr")
-        ], dim="time").drop("z_l")
-        surface_tracers = surface_tracers.rename({v:f"{v}_surface" for v in surface_tracers.data_vars})
-        tracers = xr.concat([
-            xr.open_zarr(f"../data/interim_old/{model}_historical_transient_tracers.zarr"),
-            xr.open_zarr(f"../data/interim_old/{model}_ssp585_transient_tracers.zarr")
-        ], dim="year")
-
-        ds = xr.merge([surface_fluxes, surface_tracers, tracers])
-        ds = add_estimated_layer_interfaces(ds)
-        grids[f"{model}_forced"] = CM4Xutils.ds_to_grid(ds)
-        
-    return grids
-    
 
 def pad_array(y):
     return np.concatenate(([y[0]], y, [y[-1]]))

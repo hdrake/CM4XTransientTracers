@@ -11,6 +11,7 @@ dependencies:
   - cftime
   - scipy
   - dask
+  - bottleneck
   - intake-esm
   - jupyterlab
   - matplotlib
