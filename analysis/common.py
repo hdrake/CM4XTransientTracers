@@ -6,15 +6,6 @@ import cmocean
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 
-# sigma2_i = np.array([0, 36.7, 36.96, 60])
-# sigma2_upperdeep = sigma2_i[1]
-# sigma2_deepbottom = sigma2_i[2]
-# sigma2_range = [
-#     rf"$\sigma_{{2}} \leq {sigma2_upperdeep}$ kg/m$^{{3}}$",
-#     rf"${sigma2_upperdeep}$ kg/m$^{{3}}$ $< \sigma_{{2}} \leq {sigma2_deepbottom}$ kg/m$^{{3}}$",
-#     rf"${sigma2_deepbottom}$ kg/m$^{{3}}$ $< \sigma_{{2}}$"
-# ]
-
 moc_metrics = xr.open_dataset("../data/processed/moc_metrics_piControl.nc").drop_vars("region")
 moc_metrics = moc_metrics.assign_coords({
     "rho2_moc_l": xr.DataArray((moc_metrics.rho2_moc_i.values[1:] + moc_metrics.rho2_moc_i.values[:-1])/2., dims=("rho2_moc_l",))
@@ -26,7 +17,7 @@ moc_metrics = moc_metrics.assign_coords({
 
 layer_labels = ["Surface", "Upper", "Lower", "Bottom"]
 layer_labels_short = ["Surface", "Upper", "Lower", "Bottom"]
-layer_colors = ["red", "seagreen", "darkgoldenrod", "darkslateblue"]
+layer_colors = ["crimson", "seagreen", "darkgoldenrod", "darkslateblue"]
 flux_colors = {"upper-to-deep":"olive", "deep-to-bottom":"steelblue"}
 facecolor=cmocean.cm.gray(1/1.3)
 
