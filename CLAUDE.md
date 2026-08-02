@@ -64,10 +64,14 @@ Directory roles are also described in `data/README.md` and its subdirectory READ
 | `..._transient_tracers_z.zarr` | `c02_subsample_z_to_0p5.py` | annual-mean, depth-resolved tracers + state (`year` dim) |
 | `..._transient_tracers_surface.zarr` | `c02_subsample_z_to_0p5.py` | monthly top level only (`time` dim) |
 | `..._transports_rho2.zarr` | `c02_subsample_rho2_to_0p5.py` | monthly `umo`/`vmo` on `rho2` layers |
+| `..._ideal_age_z.zarr` | `c02_subsample_agessc_to_0p5.py` | annual-mean `agessc` only (`year` dim), CM4Xp125 |
 
-All are coarsened to a common 0.5° grid — `{X:2, Y:2}` for `CM4Xp25`, `{X:4, Y:4}` for `CM4Xp125` —
-via `CM4Xutils.coarsen.horizontally_coarsen`, which is finite-volume-conservative. Do not substitute
-a plain `.coarsen().mean()`.
+All are coarsened to a common 0.5° grid via `CM4Xutils.coarsen.horizontally_coarsen`, which is
+finite-volume-conservative. Do not substitute a plain `.coarsen().mean()`. The factor is `{X:2, Y:2}`
+for `CM4Xp25` and `{X:4, Y:4}` for `CM4Xp125` — **except for `agessc`**, which is diagnosed on the
+`ocean_annual_z_d2` stream that is already halved (1440×1120), and so takes `{X:2, Y:2}` even at
+p125. Both routes land on exactly the same 720×560 grid, because `_d2` is an exact edge-aligned
+factor-2 coarsening of the native grid.
 
 ## Conventions that will bite you
 
@@ -102,6 +106,19 @@ the cruder offline alternative. Prefer the regridded one; both are carried in th
 `assign_historical_dates` add 1749 to control years so a control year 101 lines up with 1850; the
 original coordinate is kept as `year_ctrl`/`time_ctrl`. Anything comparing forced to control runs
 depends on this offset.
+
+**`horizontally_coarsen` nulls exact zeros.** Every data variable is passed through
+`da.where(da != 0.)` at the end of coarsening, so a physically meaningful zero becomes NaN. This
+already bites the tracer stores: in pre-CFC years the *entire* `cfc11` field is NaN, because the
+atmospheric boundary condition is zero and the ocean is exactly zero everywhere. Never use a tracer's
+NaN pattern as a land mask — use `volcello.notnull()`. `preprocessing.restore_coarsened_exact_zeros`
+repairs this for `agessc` by distinguishing the two NaN causes via the coarsened `volcello`.
+
+**Ideal age is not a transient tracer.** `agessc` is annual-mean only (no monthly version exists
+anywhere), lives on a different stream at a different resolution, and is written to its own companion
+store rather than into `..._transient_tracers_z.zarr` — the tracer stores are too expensive to
+rebuild. `common.py:load_ideal_age()` merges it back in, reindexed onto the tracer stores' `year`
+axis, and degrades to a printed message when the store is absent (CM4Xp25 never has one).
 
 **Zarr stores are written and read with `consolidated=False` and cftime decoding.** Projections run
 past the `datetime64[ns]` range, so use `open_zarr_cftime` (or an equivalent
