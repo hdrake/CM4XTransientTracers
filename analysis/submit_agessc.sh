@@ -15,9 +15,20 @@
 #
 # Runs in $SLURM_SUBMIT_DIR, so submit from the analysis directory of the checkout
 # whose ../data/interim you want written to.
+#
+# Runs on the analysis nodes, NOT the pp nodes. The pp nodes are old Westmere
+# (Xeon X5677, no AVX at all) and this conda environment dies there with SIGILL,
+# `Illegal instruction (core dumped)`, exit 132. They are also pathologically slow
+# at reading the environment off /work: `import numpy` alone took 490 s on pp016
+# and 176 s on pp300, versus seconds on an210. The `analysis` partition is
+# heterogeneous too -- an001 is pre-AVX Nehalem and an101 is Sandy Bridge -- so the
+# exclude list below pins the job to the modern Xeon Gold nodes an[210-213].
+# /archive and dmget are reachable from these nodes.
 
+#SBATCH -p analysis
+#SBATCH --exclude=an[001-002,005-006,009-012,014,101-108,200-207]
 #SBATCH -n 1
-#SBATCH -c 4
+#SBATCH -c 2
 #SBATCH -t 24:00:00
 #SBATCH --mem=20G
 #SBATCH -o logs/%x_%j.out
@@ -28,8 +39,8 @@ conda activate CM4XTransientTracers
 cd "$SLURM_SUBMIT_DIR" || exit 1
 
 # Keep dask's threaded scheduler inside the cgroup: it would otherwise size itself
-# from the node's 8 cores rather than the 4 requested above.
-export DASK_NUM_WORKERS=4
+# from the node total rather than the cores requested above.
+export DASK_NUM_WORKERS=2
 export OMP_NUM_THREADS=1
 
 echo "host      : $(hostname)"
