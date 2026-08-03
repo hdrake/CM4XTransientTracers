@@ -499,3 +499,154 @@ def load(exp, tracers, t="*"):
 
     grid = CM4Xutils.ds_to_grid(ds)
     return grid
+
+
+# -----------------------------------------------------------------------------#
+# Ideal age (`agessc`) helpers
+#
+# `agessc` is not archived in the same form as the transient tracers. It is an
+# annual mean only (there is no monthly ideal age anywhere), and at CM4Xp125 it is
+# only diagnosed on `ocean_annual_z_d2`, whose horizontal grid is already coarsened
+# by a factor of 2 relative to the native grid the CFCs come from (1440x1120 vs
+# 2880x2240). It does share the 35 WOA09 `z_l` levels, so no vertical work is
+# needed, and `_d2` is an exact edge-aligned factor-2 coarsening of the native
+# grid, so coarsening it by {X:2, Y:2} lands on the same 0.5 degree target grid
+# that the CFCs reach from full resolution with {X:4, Y:4}.
+# -----------------------------------------------------------------------------#
+
+def open_frompp_annual(pp, ppname, variables, t="*", chunks=None):
+    """
+    Open an annual-mean time series, handling both `annual/5yr` and `annual/10yr`
+    chunking on disk.
+
+    Mirrors the chunk-offset logic of `CM4Xutils.loading.load_tracer`, but loads a
+    LIST of variables from a caller-specified `ppname` (that function loads a single
+    variable and hardcodes the stream from the tracer name, so it cannot be used to
+    pick up `volcello` alongside `agessc`).
+
+    For a 10-year archive, the 5-year block starting at year Y is the first half of
+    the file containing Y when Y % 10 is in (0, 1), and the second half of the file
+    starting at Y - 5 otherwise.
+    """
+    out = "ts"
+    local = gu.get_local(pp, ppname, out)
+    freq, chunklen = local.split("/")
+
+    open_kwargs = dict(dmget=True, engine="netcdf4", chunks={})
+
+    if (chunklen == "5yr") or (t == "*"):
+        ds = gu.open_frompp(pp, ppname, out, local, t, variables, **open_kwargs)
+    elif (freq == "annual") and (chunklen == "10yr"):
+        year = int(t[:-1])
+        if (year % 10) in (0, 1):
+            ds = gu.open_frompp(
+                pp, ppname, out, local, t, variables, **open_kwargs
+            ).isel(time=np.arange(0, 5))
+        else:
+            t_prev = str(year - 5).zfill(4) + "*"
+            ds = gu.open_frompp(
+                pp, ppname, out, local, t_prev, variables, **open_kwargs
+            ).isel(time=np.arange(5, 10))
+    else:
+        raise ValueError(
+            f"Unsupported chunking '{local}' for {ppname} in {pp}. "
+            f"Only 'annual/5yr' and 'annual/10yr' are handled."
+        )
+
+    return ds.chunk(chunks or {"time": 1, "z_l": -1, "yh": -1, "xh": -1})
+
+
+def load_agessc(exp, t="*"):
+    """
+    Load annual-mean ideal age (`agessc`) together with the `volcello` needed to
+    weight its horizontal coarsening, and return an `xgcm.Grid` built on the
+    diagnostic's OWN horizontal grid.
+
+    `fix_geo_coords` detects the halved `_d2` grid from
+    `og.sizes['xh'] == sg.sizes['nx']//4` and corrects the coordinates from the same
+    full-resolution supergrid, so no special-casing is needed here.
+
+    Returns the grid rather than the dataset on purpose. `horizontally_coarsen`
+    pulls `areacello` from `grid._ds`, and `add_grid_coords` sets `xh = arange(N)`,
+    so pairing this half-resolution dataset with a full-resolution grid would
+    silently inner-join on the overlapping integer indices and produce garbage
+    without raising. Keeping the two bound together makes that mistake impossible.
+    """
+    model_local, exp_local = [
+        (e, k) for e, d in CM4Xutils.exp_dict.items()
+        for k, v in d.items() if exp == v
+    ][0]
+
+    # Dora is intermittently unreachable; fall back to the hard-coded paths the
+    # same way `CM4Xutils.loading.get_wmt_pathDict` does.
+    try:
+        pp = doralite.dora_metadata(exp)["pathPP"]
+    except Exception:
+        print("Dora seems to be down. Using hard-coded paths instead.")
+        pp = CM4Xutils.pp_dict[model_local][exp_local]
+
+    ppname = "ocean_annual_z_d2" if "p125" in model_local else "ocean_annual_z"
+
+    ds = open_frompp_annual(pp, ppname, ["agessc", "volcello"], t=t)
+    ds = ds[["agessc", "volcello"]]
+
+    og = gu.open_static(pp, ppname)
+    sg = xr.open_dataset(CM4Xutils.exp_dict[model_local]["hgrid"])
+    og = CM4Xutils.fix_geo_coords(og, sg)
+    ds = CM4Xutils.add_grid_coords(ds, og)
+    ds = add_estimated_layer_interfaces(ds)
+
+    return CM4Xutils.ds_to_grid(ds, Zprefix="z_")
+
+
+def restore_coarsened_exact_zeros(ds_coarse, var, volume_var="volcello", verbose=True):
+    """
+    Undo `horizontally_coarsen`'s trailing `da.where(da != 0.)`, which turns exact
+    zeros into NaN.
+
+    After coarsening, `var` is NaN in exactly two situations:
+      (a) the coarse cell has no wet sub-cell, in which case the coarsened
+          `volume_var` is NaN as well (its own `.where(da != 0.)` fires); or
+      (b) the volume-weighted mean came out exactly 0., which is nulled
+          spuriously -- and there the coarsened `volume_var` is finite.
+    So `volume_var.notnull() & var.isnull()` uniquely identifies case (b).
+
+    On CM4X this is a no-op: surface `agessc` is small but never exactly zero. It is
+    kept as a cheap invariant check that reports loudly if that stops being true.
+    """
+    da = ds_coarse[var]
+    attrs = dict(da.attrs)
+    spurious = ds_coarse[volume_var].notnull() & da.isnull()
+    n_spurious = int(spurious.sum())
+    if verbose and n_spurious:
+        print(f"    Restored {n_spurious} exact zero(s) nulled by coarsening of '{var}'.")
+    ds_coarse[var] = da.where(~spurious, 0.)
+    ds_coarse[var].attrs = attrs
+    return ds_coarse
+
+
+def strip_to_index_coords(ds_coarse, keep_vars, year_dim="year"):
+    """
+    Reduce a `skip_coords=True` coarsened dataset to bare data variables on integer
+    `xh`/`yh` indices, following the convention of `CM4Xutils.loading.regrid_ice`.
+
+    With `skip_coords=True`, `horizontally_coarsen` never calls `subsample_geocoords`,
+    so xarray's `coarsen` reduces the dimension coordinates with `coord_func="mean"`
+    and leaves `xh`/`yh` as FLOAT block means (0.5, 2.5, ...), plus `geolon`/`geolat`/
+    `areacello`/`wet` as meaningless block means. Dropping them and restoring the
+    integer index makes the result align exactly with the transient tracer stores,
+    which carry the authoritative grid coordinates.
+    """
+    ds_out = ds_coarse[list(keep_vars)]
+    keep_coords = {year_dim, f"{year_dim}_ctrl", "z_l"}
+    ds_out = ds_out.drop_vars([c for c in ds_out.coords if c not in keep_coords])
+    for d, long_name in [
+        ("xh", "cell center x-index (nominally longitude)"),
+        ("yh", "cell center y-index (nominally latitude)"),
+    ]:
+        ds_out = ds_out.assign_coords({d: xr.DataArray(
+            np.arange(ds_out.sizes[d]),
+            dims=(d,),
+            attrs={"long_name": long_name, "cell_methods": f"{d}:point"},
+        )})
+    return ds_out

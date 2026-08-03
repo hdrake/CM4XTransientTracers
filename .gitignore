@@ -7,3 +7,4 @@ data/*
 !data/processed
 !data/input
 !data/obs
+analysis/logs

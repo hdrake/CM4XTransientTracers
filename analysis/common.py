@@ -1,3 +1,5 @@
+import os
+
 import xarray as xr
 import numpy as np
 import CM4Xutils
@@ -39,6 +41,29 @@ sec_per_year_wang21 = 360 * sec_per_day
 sec_per_nsec = 1.e-9
 m2_per_km2 = 1.e6
 
+def load_ideal_age(model, exps=("historical", "ssp585")):
+    """Open and concatenate the per-experiment ideal age companion stores.
+
+    `agessc` is written to its own store by `c02_subsample_agessc_to_0p5.py`, since
+    it is diagnosed on a different stream (annual mean, half-resolution grid) than
+    the transient tracers and the tracer stores are too expensive to rebuild.
+
+    Returns None, with a message, if any piece is missing: CM4Xp25 has no companion
+    store, and a CM4Xp125 run may still be in progress, so absence has to degrade
+    gracefully rather than raise.
+    """
+    paths = [f"../data/interim/{model}_{exp}_ideal_age_z.zarr" for exp in exps]
+    missing = [p for p in paths if not os.path.exists(p)]
+    if missing:
+        print(
+            f"No ideal age companion store for {model} "
+            f"(missing {[os.path.basename(p) for p in missing]}); "
+            f"`agessc` will be absent from the {model} dataset."
+        )
+        return None
+    return xr.concat([xr.open_zarr(p) for p in paths], dim="year")
+
+
 def load_datasets():
     grids = {}
     for model in models.keys():
@@ -56,7 +81,24 @@ def load_datasets():
             xr.open_zarr(f"../data/interim/{model}_ssp585_transient_tracers_z.zarr")
         ], dim="year")
 
-        ds = xr.merge([surface_fluxes, surface_tracers, tracers])
+        merge_list = [surface_fluxes, surface_tracers, tracers]
+
+        ideal_age = load_ideal_age(model)
+        if ideal_age is not None:
+            missing_years = (
+                set(int(y) for y in tracers.year.values)
+                - set(int(y) for y in ideal_age.year.values)
+            )
+            if missing_years:
+                print(
+                    f"WARNING: {model} ideal age store is missing {len(missing_years)} "
+                    f"year(s), e.g. {sorted(missing_years)[:5]}; `agessc` will be NaN there."
+                )
+            # Reindex rather than outer-join, so the merged `year` dimension is set
+            # by the tracer stores and cannot be silently extended by stray years.
+            merge_list.append(ideal_age.reindex(year=tracers.year))
+
+        ds = xr.merge(merge_list)
         ds = add_estimated_layer_interfaces(ds)
         grids[f"{model}_forced"] = CM4Xutils.ds_to_grid(ds)
     
