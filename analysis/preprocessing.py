@@ -176,17 +176,67 @@ def validate_coarse_store_after_append(path, expected_year, expected_names):
         )
 
 
+def check_append_is_in_order(path, hist_year, dim):
+    """
+    Refuse to append `hist_year` unless it lands after every year already stored.
+
+    Appends always go to the end of the store, so filling a gap in the middle of
+    the record (e.g. a year skipped by an earlier interrupted run) would silently
+    scramble the time axis. Call this before computing a year, so we fail fast.
+    """
+    if dim == "year":
+        years = get_existing_years_from_year_dim(path, year_dim="year")
+    else:
+        years = get_existing_years_from_time(path)
+    if years and int(hist_year) <= max(years):
+        raise RuntimeError(
+            f"{path}: refusing to append historical year {hist_year} because the "
+            f"store already extends to {max(years)}, so it would land out of order. "
+            f"Delete the store and re-run this script to rebuild it in order."
+        )
+
+
+def _leading_dim(arr):
+    """Name of the first dimension of a raw zarr array (zarr v2 or v3 metadata)."""
+    dims = getattr(arr.metadata, "dimension_names", None) or arr.attrs.get("_ARRAY_DIMENSIONS")
+    return dims[0] if dims else None
+
+
 def validate_surface_store_after_append(path, expected_year):
     """
-    Validate that the surface store contains the expected historical year.
+    Validate a monthly (`time`-dimensioned) store after appending a year:
+      - all time-dependent arrays have the same leading length
+      - the time coordinate is strictly increasing
+      - the last stored year is expected_year, with exactly 12 months
+
     Uses cftime-aware reopening because years can exceed datetime64 bounds.
     """
-    years = get_existing_years_from_time(path)
-    if int(expected_year) not in years:
-        tail = sorted(years)[-10:] if years else []
+    root = zarr.open_group(path, mode="r")
+    time_len = root["time"].shape[0]
+    bad = {
+        name: root[name].shape[0]
+        for name in root.array_keys()
+        if _leading_dim(root[name]) == "time" and root[name].shape[0] != time_len
+    }
+    if bad:
         raise RuntimeError(
-            f"Historical year {expected_year} missing after surface append! "
-            f"Found years near end: {tail}"
+            f"{path}: inconsistent leading time dimension after append. "
+            f"'time' has length {time_len}, mismatches: {bad}"
+        )
+
+    time_vals = open_zarr_cftime(path, consolidated=False)["time"].values
+    if not time_values_strictly_increasing(time_vals):
+        raise RuntimeError(f"{path}: time coordinate not strictly increasing after append")
+
+    years = [int(t.year) for t in time_vals]
+    if years[-1] != int(expected_year):
+        raise RuntimeError(
+            f"{path}: last stored year is {years[-1]}, expected {expected_year}"
+        )
+    n_months = years.count(int(expected_year))
+    if n_months != 12:
+        raise RuntimeError(
+            f"{path}: expected 12 months of historical year {expected_year}, found {n_months}"
         )
 
 

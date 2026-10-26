@@ -125,6 +125,7 @@ with warnings.catch_warnings(action="ignore", category=UserWarning):
                 # COARSE (depth-resolved)
                 # -----------------------------------------------------------------
                 if not coarse_done:
+                    check_append_is_in_order(coarse_path, hist_year, "year")
                     ds_year = ds_mean.sel(year=year).expand_dims(year=[year])
 
                     ds_year_coarse = CM4Xutils.coarsen.horizontally_coarsen(
@@ -197,7 +198,8 @@ with warnings.catch_warnings(action="ignore", category=UserWarning):
                 # SURFACE
                 # -----------------------------------------------------------------
                 if not surface_done:
-                    ds_surface_year = ds_surface.sel(time=ds_surface.time.dt.year == year)
+                    check_append_is_in_order(surface_path, hist_year, "time")
+                    ds_surface_year =ds_surface.sel(time=ds_surface.time.dt.year == year)
 
                     if ds_surface_year.sizes["time"] == 0:
                         raise RuntimeError(f"No surface data found for control year {year}")

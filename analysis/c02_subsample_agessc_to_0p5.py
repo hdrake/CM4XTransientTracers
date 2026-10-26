@@ -161,6 +161,7 @@ with warnings.catch_warnings(action="ignore", category=UserWarning):
                     continue
 
                 print(f"  Processing year {year} (historical {hist_year})...")
+                check_append_is_in_order(coarse_path, hist_year, "year")
 
                 ds_year = ds.sel(year=year).expand_dims(year=[int(year)])
 

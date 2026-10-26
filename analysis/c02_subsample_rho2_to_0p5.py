@@ -100,8 +100,9 @@ with warnings.catch_warnings(action="ignore", category=UserWarning):
                 # TRANSPORTS (depth-resolved)
                 # -----------------------------------------------------------------
                 if not transports_done:
-            
-                    ds_transports_year = grid._ds.sel(time=grid._ds.time.dt.year == year)
+                    check_append_is_in_order(transports_path, hist_year, "time")
+
+                    ds_transports_year =grid._ds.sel(time=grid._ds.time.dt.year == year)
                     
                     ds_transports_coarse = CM4Xutils.coarsen.horizontally_coarsen(
                         ds_transports_year, grid, dim_coarsen
@@ -166,6 +167,11 @@ with warnings.catch_warnings(action="ignore", category=UserWarning):
                             consolidated=False,
                             compute=True,
                         )
+
+                    validate_surface_store_after_append(
+                        transports_path,
+                        expected_year=hist_year,
+                    )
 
                     safe_rmtree(transports_tmp)
                 else:
