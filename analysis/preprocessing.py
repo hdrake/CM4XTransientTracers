@@ -266,9 +266,27 @@ def extract_unique_years_from_time_coord(time_coord):
 # Existing helper functions
 # -----------------------------------------------------------------------------#
 
+def get_pathPP(exp):
+    """
+    Resolve a Dora ID to its post-processing directory, returning (pp, model).
+
+    Dora is intermittently unreachable (a multi-day c02 run died on it); fall back
+    to the hard-coded paths the same way `CM4Xutils.loading.get_wmt_pathDict` does.
+    """
+    model_local, exp_local = [
+        (e, k) for e, d in CM4Xutils.exp_dict.items()
+        for k, v in d.items() if exp == v
+    ][0]
+    try:
+        pp = doralite.dora_metadata(exp)["pathPP"]
+    except Exception:
+        print("Dora seems to be down. Using hard-coded paths instead.")
+        pp = CM4Xutils.pp_dict[model_local][exp_local]
+    return pp, model_local
+
+
 def load_tracer(exp, tracers, t="*"):
-    meta = doralite.dora_metadata(exp)
-    pp = meta["pathPP"]
+    pp, model_local = get_pathPP(exp)
     ppname = "ocean_inert_z"
     out = "ts"
     local = gu.get_local(pp, ppname, out)
@@ -280,10 +298,6 @@ def load_tracer(exp, tracers, t="*"):
     ds = ds.chunk(chunks)
 
     og = gu.open_static(pp, ppname)
-    model_local = [
-        e for e, d in CM4Xutils.exp_dict.items()
-        for k, v in d.items() if exp == v
-    ][0]
     sg = xr.open_dataset(CM4Xutils.exp_dict[model_local]["hgrid"])
     og = CM4Xutils.fix_geo_coords(og, sg)
     ds = CM4Xutils.add_grid_coords(ds, og)
@@ -294,9 +308,8 @@ def load_tracer(exp, tracers, t="*"):
 
 def load_state(exp, t="*"):
     state_vars = ["volcello", "thkcello", "thetao", "so"]
-    meta = doralite.dora_metadata(exp)
-    pp = meta["pathPP"]
-    ppname = "ocean_month_z" if "p125" in meta["expName"] else "ocean_monthly_z"
+    pp, model_local = get_pathPP(exp)
+    ppname = "ocean_month_z" if "p125" in model_local else "ocean_monthly_z"
     out = "ts"
     local = gu.get_local(pp, ppname, out)
     ds = gu.open_frompp(
@@ -307,10 +320,6 @@ def load_state(exp, t="*"):
     ds = ds.chunk(chunks)
 
     og = gu.open_static(pp, ppname)
-    model_local = [
-        e for e, d in CM4Xutils.exp_dict.items()
-        for k, v in d.items() if exp == v
-    ][0]
     sg = xr.open_dataset(CM4Xutils.exp_dict[model_local]["hgrid"])
     og = CM4Xutils.fix_geo_coords(og, sg)
     ds = CM4Xutils.add_grid_coords(ds, og)
@@ -326,8 +335,7 @@ def load_rho2(exp, t="*", include_transports=False):
     state_vars = ["thkcello"]
     if include_transports:
         state_vars = state_vars + ["umo", "vmo"]
-    meta = doralite.dora_metadata(exp)
-    pp = meta["pathPP"]
+    pp, model_local = get_pathPP(exp)
     ppname = "ocean_month_rho2"
     out = "ts"
     local = gu.get_local(pp, ppname, out)
@@ -339,10 +347,6 @@ def load_rho2(exp, t="*", include_transports=False):
     ds = ds.chunk(chunks)
 
     og = gu.open_static(pp, ppname)
-    model_local = [
-        e for e, d in CM4Xutils.exp_dict.items()
-        for k, v in d.items() if exp == v
-    ][0]
     sg = xr.open_dataset(CM4Xutils.exp_dict[model_local]["hgrid"])
     og = CM4Xutils.fix_geo_coords(og, sg)
     ds = CM4Xutils.add_grid_coords(ds, og)
@@ -527,18 +531,18 @@ def infer_z(grid, zero_ssh=True):
 
 
 def load(exp, tracers, t="*"):
-    tracer_datasets = []
-
-    for tracer in tracers:
-        try:
-            ds_t = load_tracer(exp, [tracer], t=t)
-            tracer_datasets.append(ds_t)
-        except Exception as e:
-            print(f"WARNING: tracer {tracer} missing for pattern {t}: {e}")
-
-    if tracer_datasets:
-        ds_tracer = xr.merge(tracer_datasets, compat="override")
+    # Skip the tracers only when the run has no tracer stream at all (the CM4Xp25
+    # piControl runs predate adding them). Any other failure must propagate: a
+    # catch-all here once turned a Dora outage into "tracers missing", which would
+    # have silently appended tracer-free years to the stores.
+    pp, _ = get_pathPP(exp)
+    if os.path.isdir(os.path.join(pp, "ocean_inert_z")):
+        ds_tracer = xr.merge(
+            [load_tracer(exp, [tracer], t=t) for tracer in tracers],
+            compat="override",
+        )
     else:
+        print(f"WARNING: {exp} has no ocean_inert_z stream; loading state variables only.")
         ds_tracer = xr.Dataset()
 
     ds_state = load_state(exp, t=t)
@@ -622,18 +626,7 @@ def load_agessc(exp, t="*"):
     silently inner-join on the overlapping integer indices and produce garbage
     without raising. Keeping the two bound together makes that mistake impossible.
     """
-    model_local, exp_local = [
-        (e, k) for e, d in CM4Xutils.exp_dict.items()
-        for k, v in d.items() if exp == v
-    ][0]
-
-    # Dora is intermittently unreachable; fall back to the hard-coded paths the
-    # same way `CM4Xutils.loading.get_wmt_pathDict` does.
-    try:
-        pp = doralite.dora_metadata(exp)["pathPP"]
-    except Exception:
-        print("Dora seems to be down. Using hard-coded paths instead.")
-        pp = CM4Xutils.pp_dict[model_local][exp_local]
+    pp, model_local = get_pathPP(exp)
 
     ppname = "ocean_annual_z_d2" if "p125" in model_local else "ocean_annual_z"
 
