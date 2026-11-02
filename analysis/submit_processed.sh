@@ -57,6 +57,7 @@ for nb in "${notebooks[@]}"; do
     echo "running   : $nb ($(date))"
     jupyter nbconvert --to notebook --execute --inplace \
         --ExecutePreprocessor.timeout=-1 \
+        --ExecutePreprocessor.startup_timeout=600 \
         --ExecutePreprocessor.kernel_name=cm4xtransienttracers \
         "$nb.ipynb"
     status=$?
